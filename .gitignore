@@ -1,17 +1,47 @@
-ven
-target/
-dependency-reduced-pom.xml
-
 # Eclipse
+build
 .classpath
 .project
 .settings/
+.worksheet
+org.scala-ide.sdt.core/META-INF/MANIFEST.MF
+org.scala-ide.sdt.update-site/site.xml
 
-# Intellij
-.idea/
+# Intellij Idea
+*.log
 *.iml
+*.ipr
 *.iws
+.idea/
+.idea/workspace.xml
+
+# Maven
+log/
+target/
+dependency-reduced-pom.xml
+
+# sbt
+.history
+.scala_dependencies
+.cache
+.cache-main
+.lib/
+bin/
+project/
+build/
+dist/*
+out
+lib_managed/
+src_managed/
 
 # Mac
 .DS_Store
 
+# Java, Scala, SBT
+*.class
+*.log
+
+# Package Files
+*.jar
+*.war
+*.ear
