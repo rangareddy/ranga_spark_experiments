@@ -1,1 +1,1 @@
-# Spark CDP Hive Warehouse Connector Example
+# Spark Kafka Integration
