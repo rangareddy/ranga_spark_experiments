@@ -1,0 +1,1 @@
+# Spark CDP Hive Warehouse Connector Example
