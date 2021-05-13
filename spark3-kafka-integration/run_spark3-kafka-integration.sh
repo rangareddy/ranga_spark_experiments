@@ -1,11 +1,12 @@
 echo "Running $0 script"
 
 spark-submit \
-  --master local[*] \
+  --master yarn \
   --deploy-mode client \
-  --executor-memory 1g \
-  --num-executors 1 \
-  --driver-memory 1g \
+  --executor-memory 4g \
+  --num-executors 2 \
+  --driver-memory 4g \
+  --executor-cores 5
   --files /tmp/kafka_client_jaas.conf \
   --driver-java-options "-Djava.security.auth.login.config=/tmp/kafka_client_jaas.conf" \
   --conf "spark.executor.extraJavaOptions=-Djava.security.auth.login.config=/tmp/kafka_client_jaas.conf" \

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -25,36 +25,17 @@
         <scala-maven-plugin.version>4.3.1</scala-maven-plugin.version>
         <scala.version>2.12</scala.version>
         <scala-binary.version>2.12</scala-binary.version>
+
+        <junit.version>4.12</junit.version>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>scala-tools.org</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </repository>
-
-        <repository>
-            <id>central</id>
-            <name>Maven Central</name>
-            <url>https://repo1.maven.org/maven2</url>
-        </repository>
-
-        <repository>
-            <id>cldr-repo</id>
-            <name>Cloudera Public Repo</name>
-            <url>http://repository.cloudera.com/artifactory/cloudera-repos/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
-
-        <!--
         <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>${scala.version}</version>
-        </dependency> -->
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.12</artifactId>
+            <version>${spark.version}</version>
+            <scope>${spark.scope}</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.spark</groupId>
@@ -62,14 +43,6 @@
             <version>${spark.version}</version>
             <scope>${spark.scope}</scope>
         </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -87,7 +60,6 @@
             </plugin>
 
             <!-- Scala Maven Plugin -->
-            <!--
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
@@ -104,7 +76,7 @@
                     <scalaVersion>${scala.version}</scalaVersion>
                     <scalaCompatVersion>${scala-binary.version}</scalaCompatVersion>
                 </configuration>
-            </plugin> -->
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
