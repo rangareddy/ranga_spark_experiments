@@ -1,6 +1,6 @@
 echo "Running $0 script"
 
-spark-submit \
+spark3-submit \
   --master yarn \
   --deploy-mode client \
   --executor-memory 4g \
@@ -12,3 +12,5 @@ spark-submit \
   --conf "spark.executor.extraJavaOptions=-Djava.security.auth.login.config=/tmp/kafka_client_jaas.conf" \
   --class com.ranga.spark.kafka.SparkKafkaSecureStructuredStreaming \
   /tmp/SparkCDPHWCExample-1.0.0-SNAPSHOT.jar
+  
+  echo "Finished $0 script"
