@@ -10,17 +10,18 @@ $ git clone https://github.com/rangareddy/ranga_spark_experiments.git
 ```
 $ cd ranga_spark_experiments/spark3-kafka-integration
 ```
-### Build the project
+### Build the application
 ```
 $ mvn clean package -DskipTests
 ```
 
-### Copy the spark3-kafka-integration-1.0.0-SNAPSHOT.jar to gateway/edge node to /tmp directory
+### Copy the uber jar spark3-kafka-integration-1.0.0-SNAPSHOT.jar to gateway/edge node to /tmp directory
+Copy the uber jar from **target/spark3-kafka-integration-1.0.0-SNAPSHOT.jar** to the spark gateway node. For example /tmp location.
 ```
 $ scp target/spark3-kafka-integration-1.0.0-SNAPSHOT.jar root@node1.hadoop.com:/tmp
 ```
 
-## Create the Kafka Topic and Produce the messages
+## Create a Kafka topic and Produce some messages
 
 ### kinit as a kafka user
 Copy the **kafka.keytab** file to temp location for example **/tmp/kafka.keytab**
@@ -50,10 +51,12 @@ security.protocol=SASL_PLAINTEXT
 sasl.kerberos.service.name=kafka
 ```
 
-### Create Kafka Client jaas file
+### Create Kafka Client JAAS configuration for Kerberos access
 ```sh
 vi /tmp/kafka_client_jaas.conf
 ```
+
+We are assumed the client user's keytab is called **kafka.keytab** and is placed in the /tmp directory on the edge node.
 
 ```sh
 KafkaClient {
@@ -67,10 +70,9 @@ KafkaClient {
 };
 ```
 
-### Export the Kafka opts
+### Export the KAFKA_OPTS
 ```sh
-export KAFKA_PLAIN_PARAMS="-Djava.security.auth.login.config=/tmp/kafka_client_jaas.conf"
-export KAFKA_OPTS="$KAFKA_PLAIN_PARAMS $KAFKA_OPTS"
+export KAFKA_OPTS="-Djava.security.auth.login.config=/tmp/kafka_client_jaas.conf"
 ```
 
 ### Produce the kafka message
