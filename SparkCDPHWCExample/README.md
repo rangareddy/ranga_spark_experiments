@@ -1,1 +1,1 @@
-# Spark CDP Hive Warehouse Connector Example
+# Spark CDP Hive Warehouse Connector (HWC) Example
