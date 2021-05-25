@@ -10,6 +10,6 @@ spark3-submit \
   --conf "spark.driver.extraJavaOptions=-Djava.security.auth.login.config=/tmp/kafka_client_jaas.conf" \
   --conf "spark.executor.extraJavaOptions=-Djava.security.auth.login.config=/tmp/kafka_client_jaas.conf" \
   --class com.ranga.spark.kafka.SparkKafkaSecureStructuredStreaming \
-  /tmp/spark3-kafka-integration-1.0.0-SNAPSHOT.jar node1.hadoop.com:9092 SASL_PLAINTEXT KafkaWordCount
+  /tmp/spark3_kafka_integration-1.0.0-SNAPSHOT.jar node1.hadoop.com:9092 SASL_PLAINTEXT KafkaWordCount
   
-  echo "Finished $0 script"
+echo "Finished $0 script"

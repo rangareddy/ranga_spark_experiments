@@ -1,4 +1,6 @@
-sudo -u hive spark-submit \
+echo "Running $0 script"
+
+spark-submit \
   --master yarn \
   --deploy-mode client \
   --executor-memory 1g \
@@ -18,4 +20,6 @@ sudo -u hive spark-submit \
   --conf spark.security.credentials.hiveserver2.enabled=false \
   --conf spark.sql.extensions=com.hortonworks.spark.sql.rule.Extensions \
   --class com.ranga.spark.hwc.SparkHWCJavaExample \
-  /tmp/SparkCDPHWCExample-1.0.0-SNAPSHOT.jar
+  /tmp/spark_hwc_integration-1.0.0-SNAPSHOT.jar
+
+echo "Finished $0 script"

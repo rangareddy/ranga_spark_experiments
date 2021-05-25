@@ -1,4 +1,3 @@
-
 package com.ranga.spark.kafka
 
 import org.apache.spark.sql.SparkSession
