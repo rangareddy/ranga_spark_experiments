@@ -17,5 +17,5 @@ sudo -u hive spark-submit \
   --conf spark.datasource.hive.warehouse.read.mode=DIRECT_READER_V2 \
   --conf spark.security.credentials.hiveserver2.enabled=false \
   --conf spark.sql.extensions=com.hortonworks.spark.sql.rule.Extensions \
-  --class com.cloudera.spark.hwc.SparkHWCJavaExample \
+  --class com.ranga.spark.hwc.SparkHWCJavaExample \
   /tmp/SparkCDPHWCExample-1.0.0-SNAPSHOT.jar

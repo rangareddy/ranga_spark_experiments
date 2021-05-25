@@ -1,13 +1,13 @@
-package com.cloudera.spark.hwc;
+package com.ranga.spark.s3;
 
 public class Employee {
-
     private long id;
     private String name;
     private int age;
     private double salary;
 
     public Employee() {
+
     }
 
     public Employee(long id, String name, int age, double salary) {

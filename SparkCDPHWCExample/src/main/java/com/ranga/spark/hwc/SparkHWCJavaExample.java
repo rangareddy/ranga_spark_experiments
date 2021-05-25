@@ -1,4 +1,4 @@
-package com.cloudera.spark.hwc;
+package com.ranga.spark.hwc;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.sql.*;
@@ -15,8 +15,8 @@ public class SparkHWCJavaExample {
 
     public static void main(String[] args) {
 
-        SparkConf sparkConf = new SparkConf().
-                setSparkHome("Spark CDP HWC Example")
+        SparkConf sparkConf = new SparkConf()
+                .setAppName("Spark CDP HWC Example")
                 .setIfMissing("spark.master", "local");
 
         SparkSession spark = SparkSession.builder().config(sparkConf)

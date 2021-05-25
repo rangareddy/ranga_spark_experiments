@@ -5,28 +5,32 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ranga.spark.hwc</groupId>
-    <artifactId>SparkCDPHWCExample</artifactId>
+    <groupId>com.ranga.spark.s3</groupId>
+    <artifactId>spark_s3_integration</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>SparkCDPHWCExample</name>
+    <name>Spark S3 Integration Example</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-
-        <spark.version>2.4.0.7.1.4.0-203</spark.version>
-        <hwc.version>1.0.0.7.1.4.0-203</hwc.version>
-        <spark.scope>provided</spark.scope>
-
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven-shade-plugin.version>3.2.3</maven-shade-plugin.version>
         <scala-maven-plugin.version>4.3.1</scala-maven-plugin.version>
+
         <scala.version>2.11</scala.version>
         <scala-binary.version>2.12</scala-binary.version>
 
-        <junit.version>4.13.1</junit.version>
+        <spark.version>2.4.0.7.1.6.0-297</spark.version>
+        <spark.scope>provided</spark.scope>
+
+        <aws-java-sdk-bundle.version>1.11.375</aws-java-sdk-bundle.version>
+        <aws-java-sdk-bundle.scope>provided</aws-java-sdk-bundle.scope>
+
+        <hadoop-aws.version>3.1.1.7.1.6.0-297</hadoop-aws.version>
+        <hadoop-aws.scope>provided</hadoop-aws.scope>
+
     </properties>
 
     <repositories>
@@ -71,25 +75,20 @@
             <scope>${spark.scope}</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle -->
         <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-hive_${scala.version}</artifactId>
-            <version>${spark.version}</version>
-            <scope>${spark.scope}</scope>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-bundle</artifactId>
+            <version>${aws-java-sdk-bundle.version}</version>
+            <scope>${aws-java-sdk-bundle.scope}</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-aws -->
         <dependency>
-            <groupId>com.hortonworks.hive</groupId>
-            <artifactId>hive-warehouse-connector_${scala.version}</artifactId>
-            <version>${hwc.version}</version>
-            <scope>${spark.scope}</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-aws</artifactId>
+            <version>${hadoop-aws.version}</version>
+            <scope>${hadoop-aws.scope}</scope>
         </dependency>
 
     </dependencies>
@@ -109,7 +108,6 @@
             </plugin>
 
             <!-- Scala Maven Plugin -->
-            <!--
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
@@ -126,7 +124,7 @@
                     <scalaVersion>${scala.version}</scalaVersion>
                     <scalaCompatVersion>${scala-binary.version}</scalaCompatVersion>
                 </configuration>
-            </plugin> -->
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
