@@ -65,6 +65,5 @@ object SparkS3IntegrationExample {
     spark.close()
 
     System.out.println("SparkSession stopped")
-
   }
 }
