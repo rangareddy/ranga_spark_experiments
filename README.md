@@ -1,4 +1,5 @@
 # My Spark Experiments
 
-1. [Spark3 Kafka Integration](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark3-kafka-integration)
-2. [Spark HWC Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/SparkCDPHWCExample)
+1. [Spark3 Kafka Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark3_kafka_integration)
+2. [Spark HWC Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_hwc_integration)
+3. [Spark S3 Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_s3_integration)
