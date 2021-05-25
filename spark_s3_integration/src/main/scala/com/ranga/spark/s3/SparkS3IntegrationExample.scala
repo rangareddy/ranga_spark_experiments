@@ -5,18 +5,24 @@ import org.apache.spark.sql._
 
 object SparkS3IntegrationExample {
 
-  private val AWS_BUCKET_NAME = "YOUR_AWS_BUCKET_NAME"
-  private val AWS_ACCESS_KEY_ID = "YOUR_AWS_ACCESS_KEY_ID"
-  private val AWS_SECRET_ACCESS_KEY = "YOUR_AWS_SECRET_ACCESS_KEY"
-
   case class Employee(id: Long, name: String, age: Int, salary: Double)
 
   def main(args: Array[String]): Unit = {
 
+    if (args.length < 2) {
+      System.err.println("Usage   : SparkS3IntegrationExample <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY>")
+      System.out.println("Example : SparkS3IntegrationExample ranga_aws_access_key ranga_aws_secret_access_key")
+      System.exit(0)
+    }
+
+    val bucketName = "ranga-spark-s3-bkt"
+    val awsAccessKey = args(0)
+    val awsSecretKey = args(1)
+
     // Creating the SparkConf object
     val sparkConf = new SparkConf().setAppName("Spark S3 Integration Example").
-      set("spark.hadoop.fs.s3a.access.key", AWS_ACCESS_KEY_ID).
-      set("spark.hadoop.fs.s3a.secret.key", AWS_SECRET_ACCESS_KEY).
+      set("spark.hadoop.fs.s3a.access.key", awsAccessKey).
+      set("spark.hadoop.fs.s3a.secret.key", awsSecretKey).
       set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem").
       set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version", "2").
       set("spark.speculation", "false").
@@ -26,7 +32,7 @@ object SparkS3IntegrationExample {
 
     // Creating the SparkSession object
     val spark = SparkSession.builder.config(sparkConf).getOrCreate
-    println("Spark Created successfully")
+    println("SparkSession Created successfully")
 
     val employeeData = Seq(
       Employee(1, "Ranga", 32, 245000.30),
@@ -40,7 +46,7 @@ object SparkS3IntegrationExample {
     employeeDF.show()
 
     // Define the s3 destination path
-    val s3_dest_path = "s3a://" + AWS_BUCKET_NAME + "/employees"
+    val s3_dest_path = "s3a://" + bucketName + "/employees"
 
     // Write the data as Orc
     val employeeOrcPath = s3_dest_path + "/employee_orc"
@@ -57,5 +63,8 @@ object SparkS3IntegrationExample {
 
     // Close the SparkSession
     spark.close()
+
+    System.out.println("SparkSession stopped")
+
   }
 }

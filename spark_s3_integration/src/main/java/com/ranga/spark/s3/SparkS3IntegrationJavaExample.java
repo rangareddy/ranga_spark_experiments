@@ -8,17 +8,22 @@ import java.util.List;
 
 public class SparkS3IntegrationJavaExample {
 
-    private static final String AWS_BUCKET_NAME = "YOUR_AWS_BUCKET_NAME";
-    private static final String AWS_ACCESS_KEY_ID = "YOUR_AWS_ACCESS_KEY_ID";
-    private static final String AWS_SECRET_ACCESS_KEY = "YOUR_AWS_SECRET_ACCESS_KEY";
-
     public static void main(String[] args) {
+
+        if(args.length < 2) {
+            System.err.println("Usage   : SparkS3IntegrationJavaExample <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY>");
+            System.out.println("Example : SparkS3IntegrationJavaExample ranga_aws_access_key ranga_aws_secret_access_key");
+            System.exit(0);
+        }
+
+        String awsAccessKey = args[0];
+        String awsSecretKey = args[1];
 
         // Creating the SparkConf object
         SparkConf sparkConf = new SparkConf()
                 .setAppName("Spark S3 Integration Java Example")
-                .set("spark.hadoop.fs.s3a.access.key", AWS_ACCESS_KEY_ID)
-                .set("spark.hadoop.fs.s3a.secret.key", AWS_SECRET_ACCESS_KEY)
+                .set("spark.hadoop.fs.s3a.access.key", awsAccessKey)
+                .set("spark.hadoop.fs.s3a.secret.key", awsSecretKey)
                 .set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
                 .set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version", "2")
                 .set("spark.speculation", "false")
@@ -28,20 +33,21 @@ public class SparkS3IntegrationJavaExample {
 
         // Creating the SparkSession object
         SparkSession spark = SparkSession.builder().config(sparkConf).getOrCreate();
-        System.out.println("Spark Created successfully");
+        System.out.println("SparkSession Created successfully");
 
         List<Employee> employeeData = new ArrayList<>();
         employeeData.add(new Employee(1, "Ranga", 32, 245000.30));
         employeeData.add(new Employee(2, "Nishanth", 2, 345000.10));
         employeeData.add(new Employee(3, "Raja", 32, 245000.86));
-        employeeData.add(new Employee(4, "Mani", 14, 45000));
+        employeeData.add(new Employee(4, "Mani", 14, 45000.00));
 
         Dataset<Row> employeeDF = spark.createDataFrame(employeeData, Employee.class);
         employeeDF.printSchema();
         employeeDF.show();
 
         // Define the s3 destination path
-        String s3_dest_path = "s3a://"+AWS_BUCKET_NAME+"/employees";
+        String bucketName = "ranga-spark-s3-bkt";
+        String s3_dest_path = "s3a://"+bucketName+"/employees";
 
         // Write the data as Orc
         String employeeOrcPath = s3_dest_path + "/employee_orc";
@@ -58,5 +64,6 @@ public class SparkS3IntegrationJavaExample {
 
         // Close the SparkSession
         spark.close();
+        System.out.println("SparkSession stopped");
     }
 }
