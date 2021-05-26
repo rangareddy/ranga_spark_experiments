@@ -9,23 +9,23 @@ object SparkS3IntegrationExample {
 
   def main(args: Array[String]): Unit = {
 
-    if (args.length < 2) {
-      System.err.println("Usage   : SparkS3IntegrationExample <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY>")
-      System.out.println("Example : SparkS3IntegrationExample ranga_aws_access_key ranga_aws_secret_access_key")
+    if (args.length < 3) {
+      System.err.println("Usage   : SparkS3IntegrationExample <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY> <BUCKET_NAME>")
+      System.out.println("Example : SparkS3IntegrationExample ranga_aws_access_key ranga_aws_secret_access_key ranga-spark-s3-bkt")
       System.exit(0)
     }
 
-    val bucketName = "ranga-spark-s3-bkt"
     val awsAccessKey = args(0)
     val awsSecretKey = args(1)
+    val bucketName = args(2)
 
     // Creating the SparkConf object
     val sparkConf = new SparkConf().setAppName("Spark S3 Integration Example").
       set("spark.hadoop.fs.s3a.access.key", awsAccessKey).
       set("spark.hadoop.fs.s3a.secret.key", awsSecretKey).
       set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem").
-      set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version", "2").
       set("spark.speculation", "false").
+      set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version", "2").
       set("spark.hadoop.mapreduce.fileoutputcommitter.cleanup-failures.ignored", "true").
       set("fs.s3a.experimental.input.fadvise", "random").
       setIfMissing("spark.master", "local")

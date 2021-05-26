@@ -6,13 +6,14 @@ from pyspark.sql import SparkSession
 from pyspark.sql import Row
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage  : spark_s3_integration.py <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY>", file=sys.stderr)
-        print("Example: spark_s3_integration.py ranga_aws_access_key ranga_aws_secret_key>", file=sys.stderr)
+    if len(sys.argv) != 4:
+        print("Usage  : spark_s3_integration.py <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY> <BUCKET_NAME>", file=sys.stderr)
+        print("Example: spark_s3_integration.py ranga_aws_access_key ranga_aws_secret_key ranga-spark-s3-bkt", file=sys.stderr)
         exit(-1)
 
     awsAccessKey = sys.argv[1]
     awsSecretKey = sys.argv[2]
+    bucketName = sys.argv[3]
 
     conf = (
         SparkConf()
@@ -43,8 +44,8 @@ if __name__ == "__main__":
     employeeDF.show()
 
     # Define the s3 destination path
-    bucketName="ranga-spark-s3-bkt"
     s3_dest_path = "s3a://" + bucketName + "/employees"
+    print("s3 destination path "+s3_dest_path)
 
     # Write the data as Orc
     employeeOrcPath = s3_dest_path + "/employee_orc"

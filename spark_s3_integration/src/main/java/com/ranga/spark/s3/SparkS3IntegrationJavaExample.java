@@ -10,18 +10,18 @@ public class SparkS3IntegrationJavaExample {
 
     public static void main(String[] args) {
 
-        if(args.length < 2) {
-            System.err.println("Usage   : SparkS3IntegrationJavaExample <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY>");
-            System.out.println("Example : SparkS3IntegrationJavaExample ranga_aws_access_key ranga_aws_secret_access_key");
+        if(args.length < 3) {
+            System.err.println("Usage   : SparkS3IntegrationJavaExample <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY> <BUCKET_NAME>");
+            System.out.println("Example : SparkS3IntegrationJavaExample ranga_aws_access_key ranga_aws_secret_access_key ranga-spark-s3-bkt");
             System.exit(0);
         }
 
         String awsAccessKey = args[0];
         String awsSecretKey = args[1];
+        String bucketName = args[2];
 
         // Creating the SparkConf object
-        SparkConf sparkConf = new SparkConf()
-                .setAppName("Spark S3 Integration Java Example")
+        SparkConf sparkConf = new SparkConf().setAppName("Spark S3 Integration Java Example")
                 .set("spark.hadoop.fs.s3a.access.key", awsAccessKey)
                 .set("spark.hadoop.fs.s3a.secret.key", awsSecretKey)
                 .set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
@@ -46,7 +46,6 @@ public class SparkS3IntegrationJavaExample {
         employeeDF.show();
 
         // Define the s3 destination path
-        String bucketName = "ranga-spark-s3-bkt";
         String s3_dest_path = "s3a://"+bucketName+"/employees";
 
         // Write the data as Orc

@@ -1,144 +1,78 @@
 # Spark S3 Integration Example
 
+## Amazon S3
+Amazon Simple Storage Service (Amazon S3) is an object storage service that offers industry-leading scalability, 
+data availability, security, and performance. This means customers of all sizes and industries can use it to store and 
+protect any amount of data for a range of use cases, such as websites, mobile applications, backup and restore, archive, 
+enterprise applications, IoT devices, and big data analytics.
+
 ## Pyspark
 
-```python
-from __future__ import print_function
-import sys
-
-from pyspark.conf import SparkConf
-from pyspark.sql import SparkSession
-from pyspark.sql import Row
-
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage  : spark_s3_integration.py <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY>", file=sys.stderr)
-        print("Example: spark_s3_integration.py ranga_aws_access_key ranga_aws_secret_key>", file=sys.stderr)
-        exit(-1)
-
-    awsAccessKey = sys.argv[1]
-    awsSecretKey = sys.argv[2]
-
-    conf = (
-        SparkConf()
-            .setAppName("PySpark S3 Integration Example")
-            .set("spark.hadoop.fs.s3a.access.key", awsAccessKey)
-            .set("spark.hadoop.fs.s3a.secret.key", awsSecretKey)
-            .set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-            .set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version", "2")
-            .set("spark.speculation", "false")
-            .set("spark.hadoop.mapreduce.fileoutputcommitter.cleanup-failures.ignored", "true")
-            .set("fs.s3a.experimental.input.fadvise", "random")
-            .setIfMissing("spark.master", "local")
-    )
-
-    # Creating the SparkSession object
-    spark = SparkSession.builder.config(conf=conf).getOrCreate()
-    print("SparkSession Created successfully")
-
-    Employee = Row("id", "name", "age", "salary")
-    employee1 = Employee(1, "Ranga", 32, 245000.30)
-    employee2 = Employee(2, "Nishanth", 2, 345000.10)
-    employee3 = Employee(3, "Raja", 32, 245000.86)
-    employee4 = Employee(4, "Mani", 14, 45000.00)
-
-    employeeData = [employee1, employee2, employee3, employee4]
-    employeeDF = spark.createDataFrame(employeeData)
-    employeeDF.printSchema()
-    employeeDF.show()
-
-    # Define the s3 destination path
-    bucketName="ranga-spark-s3-bkt"
-    s3_dest_path = "s3a://" + bucketName + "/employees"
-
-    # Write the data as Orc
-    employeeOrcPath = s3_dest_path + "/employee_orc"
-    employeeDF.write.mode("overwrite").format("orc").save(employeeOrcPath)
-
-    # Read the employee orc data
-    employeeOrcData = spark.read.format("orc").load(employeeOrcPath);
-    employeeOrcData.printSchema()
-    employeeOrcData.show()
-
-    # Write the data as Parquet
-    employeeParquetPath = s3_dest_path + "/employee_parquet"
-    employeeOrcData.write.mode("overwrite").format("parquet").save(employeeParquetPath)
-
-    spark.stop()
-    print("SparkSession stopped")
+### Download the `spark_s3_integration` project
+```sh
+$ git clone https://github.com/rangareddy/ranga_spark_experiments.git
+$ cd ranga_spark_experiments/spark_s3_integration
 ```
 
-## Scala code
+### Create the application deployment directory in spark gateway node. for example `/apps/spark/spark_s3_integration`
+```sh
+$ ssh username@node2.host.com
+$ mkdir -p /apps/spark/spark_s3_integration
+$ chmod 755 /apps/spark/spark_s3_integration
+```
 
-```scala
-// vi SparkS3IntegrationExample.scala
-package com.ranga.spark.s3
+### Copy the `spark_s3_integration.py` python file and run script `run_pyspark_s3_integration_example.sh` to spark gateway node `/apps/spark/spark_s3_integration` directory
+```sh
+$ scp spark_s3_integration.py root@node2.host.com:/apps/spark/spark_s3_integration
+$ scp run_pyspark_s3_integration_example.sh root@node2.host.com:/apps/spark/spark_s3_integration
+```
 
-import org.apache.spark.SparkConf
-import org.apache.spark.sql._
+## Run the `run_pyspark_s3_integration_example.sh` shell script.
+Before running the shell script, update the following property values.
+```sh
+<AWS_ACCESS_KEY_ID> - yours aws access key
+<AWS_SECRET_ACCESS_KEY> - yours aws secret access key
+<BUCKET_NAME> - yours aws s3 bucket name
+```
+```sh
+sh /apps/spark/spark_s3_integration/run_pyspark_s3_integration_example.sh
+```
 
-object SparkS3IntegrationExample {
+## Scala/Java Project setup
 
-  case class Employee(id: Long, name: String, age: Int, salary: Double)
+### Download the `spark_s3_integration` project
+```sh
+$ git clone https://github.com/rangareddy/ranga_spark_experiments.git
+$ cd ranga_spark_experiments/spark_s3_integration
+```
 
-  def main(args: Array[String]): Unit = {
+### Build the `spark_s3_integration` application
+```sh
+$ mvn clean package
+```
 
-    if (args.length < 2) {
-      System.err.println("Usage   : SparkS3IntegrationExample <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY>")
-      System.out.println("Example : SparkS3IntegrationExample ranga_aws_access_key ranga_aws_secret_access_key")
-      System.exit(0)
-    }
+### Create the application deployment directory in spark gateway node. for example `/apps/spark/spark_s3_integration`
+```sh
+$ ssh username@node2.host.com
+$ mkdir -p /apps/spark/spark_s3_integration
+$ chmod 755 /apps/spark/spark_s3_integration
+```
 
-    val bucketName = "ranga-spark-s3-bkt"
-    val awsAccessKey = args(0)
-    val awsSecretKey = args(1)
+### Copy the `spark_s3_integration-1.0.0-SNAPSHOT.jar` uber jar and run script `run_spark_s3_integration_example.sh` to spark gateway node `/apps/spark/spark_s3_integration` directory
+```sh
+$ scp target/spark3-kafka-integration-1.0.0-SNAPSHOT.jar root@node2.host.com:/apps/spark/spark_s3_integration
+$ scp run_spark_s3_integration_example.sh root@node2.host.com:/apps/spark/spark_s3_integration
+```
 
-    // Creating the SparkConf object
-    val sparkConf = new SparkConf().setAppName("Spark S3 Integration Example").
-      set("spark.hadoop.fs.s3a.access.key", awsAccessKey).
-      set("spark.hadoop.fs.s3a.secret.key", awsSecretKey).
-      set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem").
-      set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version", "2").
-      set("spark.speculation", "false").
-      set("spark.hadoop.mapreduce.fileoutputcommitter.cleanup-failures.ignored", "true").
-      set("fs.s3a.experimental.input.fadvise", "random").
-      setIfMissing("spark.master", "local")
-
-    // Creating the SparkSession object
-    val spark = SparkSession.builder.config(sparkConf).getOrCreate
-    println("SparkSession Created successfully")
-
-    val employeeData = Seq(
-      Employee(1, "Ranga", 32, 245000.30),
-      Employee(2, "Nishanth", 2, 345000.10),
-      Employee(3, "Raja", 32, 245000.86),
-      Employee(4, "Mani", 14, 45000)
-    )
-
-    val employeeDF = spark.createDataFrame(employeeData)
-    employeeDF.printSchema()
-    employeeDF.show()
-
-    // Define the s3 destination path
-    val s3_dest_path = "s3a://" + bucketName + "/employees"
-
-    // Write the data as Orc
-    val employeeOrcPath = s3_dest_path + "/employee_orc"
-    employeeDF.write.mode("overwrite").format("orc").save(employeeOrcPath)
-
-    // Read the employee orc data
-    val employeeOrcData = spark.read.format("orc").load(employeeOrcPath)
-    employeeOrcData.printSchema()
-    employeeOrcData.show()
-
-    // Write the data as Parquet
-    val employeeParquetPath = s3_dest_path + "/employee_parquet"
-    employeeOrcData.write.mode("overwrite").format("parquet").save(employeeParquetPath)
-
-    // Close the SparkSession
-    spark.close()
-
-    System.out.println("SparkSession stopped")
-  }
-}
+## Run the shell script.
+Before running the shell script, update the following property values.
+```sh
+<AWS_ACCESS_KEY_ID> - yours aws access key
+<AWS_SECRET_ACCESS_KEY> - yours aws secret access key
+<BUCKET_NAME> - yours aws s3 bucket name
+```
+> If you are running application with java, you need to update the class name `com.ranga.spark.s3.SparkS3IntegrationJavaExample` in run_spark_s3_integration_example.sh.
+Then run the following script.
+```sh
+sh /apps/spark/spark_s3_integration/run_spark_s3_integration_example.sh
 ```
