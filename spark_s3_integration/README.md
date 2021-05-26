@@ -57,7 +57,7 @@ $ chmod 755 /apps/spark/spark_s3_integration
 
 ### Copy the `spark_s3_integration-1.0.0-SNAPSHOT.jar` uber jar and run script `run_spark_s3_integration_example.sh` to spark gateway node `/apps/spark/spark_s3_integration` directory
 ```sh
-$ scp target/spark3-kafka-integration-1.0.0-SNAPSHOT.jar root@node2.host.com:/apps/spark/spark_s3_integration
+$ scp target/spark_s3_integration-1.0.0-SNAPSHOT.jar root@node2.host.com:/apps/spark/spark_s3_integration
 $ scp run_spark_s3_integration_example.sh root@node2.host.com:/apps/spark/spark_s3_integration
 ```
 
