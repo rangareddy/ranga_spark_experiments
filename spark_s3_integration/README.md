@@ -1,12 +1,6 @@
 # Spark S3 Integration Example
 
-## Amazon S3
-Amazon Simple Storage Service (Amazon S3) is an object storage service that offers industry-leading scalability, 
-data availability, security, and performance. This means customers of all sizes and industries can use it to store and 
-protect any amount of data for a range of use cases, such as websites, mobile applications, backup and restore, archive, 
-enterprise applications, IoT devices, and big data analytics.
-
-## Pyspark
+## Pyspark Project setup
 
 ### Download the `spark_s3_integration` project
 ```sh
@@ -38,7 +32,7 @@ Before running the shell script, update the following property values.
 sh /apps/spark/spark_s3_integration/run_pyspark_s3_integration_example.sh
 ```
 
-## Scala/Java Project setup
+## Spark Scala/Java Project setup
 
 ### Download the `spark_s3_integration` project
 ```sh
