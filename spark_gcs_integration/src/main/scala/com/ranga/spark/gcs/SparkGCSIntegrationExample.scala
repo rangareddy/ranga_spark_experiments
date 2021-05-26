@@ -9,42 +9,34 @@ object SparkGCSIntegrationExample {
 
   def main(args: Array[String]): Unit = {
 
-    if (args.length < 3) {
-      System.err.println("Usage   : SparkGCSIntegrationExample <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY> <BUCKET_NAME>")
-      System.out.println("Example : SparkGCSIntegrationExample ranga_aws_access_key ranga_aws_secret_access_key ranga-spark-s3-bkt")
+    if (args.length < 5) {
+      System.err.println("Usage   : SparkGCSIntegrationExample <PROJECT_ID> <BUCKET_NAME> <PRIVATE_KEY> <PRIVATE_KEY_ID> <CLIENT_EMAIL>")
+      System.out.println("Example : SparkGCSIntegrationExample ranga-gcp-spark-project ranga-spark-gcp-bkt ranga_private_key ranga_private_key_id rangareddy@project.iam.gserviceaccount.com")
       System.exit(0)
     }
 
-    val awsAccessKey = args(0)
-    val awsSecretKey = args(1)
-    val bucketName = args(2)
+    val projectId = args(0)
+    val bucketName = args(1)
+    val privateKey = args(2)
+    val privateKeyId = args(3)
+    val clientEmail = args(4)
 
     // Creating the SparkConf object
     val sparkConf = new SparkConf().setAppName("Spark GCS Integration Example").
-      set("spark.hadoop.fs.s3a.access.key", awsAccessKey).
-      set("spark.hadoop.fs.s3a.secret.key", awsSecretKey).
-      set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem").
-      set("spark.speculation", "false").
-      set("spark.hadoop.mapreduce.fileoutputcommitter.algorithm.version", "2").
-      set("spark.hadoop.mapreduce.fileoutputcommitter.cleanup-failures.ignored", "true").
-      set("fs.s3a.experimental.input.fadvise", "random").
       setIfMissing("spark.master", "local")
-
-   /* import org.apache.hadoop.fs.Path
-    val path = new Path("gs://BUCKET/OBJECT")  // actual path filled in
-    val fs = path.getFileSystem(conf)*/
 
     // Creating the SparkSession object
     val spark = SparkSession.builder.config(sparkConf).getOrCreate
+    println("SparkSession Created successfully")
 
     val conf = spark.sparkContext.hadoopConfiguration
     conf.set("fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem")
     conf.set("fs.AbstractFileSystem.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS")
-    conf.set("fs.gs.project.id", "<MY_PROJECT>")  // actual project filled in
-    conf.set("google.cloud.auth.service.account.enable", "true")
-    conf.set("google.cloud.auth.service.account.json.keyfile", "/path/to/keyfile")  // actual keyfile filled in
-
-    println("SparkSession Created successfully")
+    conf.set("fs.gs.auth.service.account.enable", "true")
+    conf.set("fs.gs.project.id", projectId)
+    conf.set("fs.gs.auth.service.account.private.key", privateKey)
+    conf.set("fs.gs.auth.service.account.private.key.id", privateKeyId)
+    conf.set("fs.gs.auth.service.account.email", clientEmail)
 
     val employeeData = Seq(
       Employee(1, "Ranga", 32, 245000.30),
@@ -58,10 +50,10 @@ object SparkGCSIntegrationExample {
     employeeDF.show()
 
     // Define the s3 destination path
-    val s3_dest_path = "s3a://" + bucketName + "/employees"
+    val gcs_dest_path = "gs://" + bucketName + "/employees"
 
     // Write the data as Orc
-    val employeeOrcPath = s3_dest_path + "/employee_orc"
+    val employeeOrcPath = gcs_dest_path + "/employee_orc"
     employeeDF.write.mode("overwrite").format("orc").save(employeeOrcPath)
 
     // Read the employee orc data
@@ -70,7 +62,7 @@ object SparkGCSIntegrationExample {
     employeeOrcData.show()
 
     // Write the data as Parquet
-    val employeeParquetPath = s3_dest_path + "/employee_parquet"
+    val employeeParquetPath = gcs_dest_path + "/employee_parquet"
     employeeOrcData.write.mode("overwrite").format("parquet").save(employeeParquetPath)
 
     // Close the SparkSession

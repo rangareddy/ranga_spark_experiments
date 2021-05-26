@@ -27,11 +27,12 @@
         <scala.binary.version>2.11</scala.binary.version>
 
         <spark.version>2.4.0.7.1.6.0-297</spark.version>
+        <!--<spark.version>2.4.0</spark.version>-->
         <spark.scope>provided</spark.scope>
 
         <gcs-connector.version>2.1.2.7.1.6.0-297</gcs-connector.version>
+        <!--<gcs-connector.version>hadoop2-2.0.0</gcs-connector.version> -->
         <gcs-connector.scope>provided</gcs-connector.scope>
-
     </properties>
 
     <repositories>
@@ -40,19 +41,11 @@
             <name>Scala-Tools Maven2 Repository</name>
             <url>http://scala-tools.org/repo-releases</url>
         </repository>
-
-        <repository>
-            <id>central</id>
-            <name>Maven Central</name>
-            <url>https://repo1.maven.org/maven2</url>
-        </repository>
-
         <repository>
             <id>cldr-repo</id>
             <name>Cloudera Public Repo</name>
             <url>http://repository.cloudera.com/artifactory/cloudera-repos/</url>
         </repository>
-
         <repository>
             <id>hdp-repo</id>
             <name>Hortonworks Public Repo</name>
@@ -62,11 +55,11 @@
 
     <dependencies>
 
-        <dependency>
+       <!-- <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
             <version>${scala.version}</version>
-        </dependency>
+        </dependency> -->
 
         <dependency>
             <groupId>org.apache.spark</groupId>
