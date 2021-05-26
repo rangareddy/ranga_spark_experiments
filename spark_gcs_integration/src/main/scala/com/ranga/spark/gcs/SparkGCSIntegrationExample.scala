@@ -1,4 +1,4 @@
-package com.ranga.spark.s3
+package com.ranga.spark.gcs
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql._

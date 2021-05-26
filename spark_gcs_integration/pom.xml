@@ -29,11 +29,8 @@
         <spark.version>2.4.0.7.1.6.0-297</spark.version>
         <spark.scope>provided</spark.scope>
 
-        <aws-java-sdk-bundle.version>1.11.375</aws-java-sdk-bundle.version>
-        <aws-java-sdk-bundle.scope>provided</aws-java-sdk-bundle.scope>
-
-        <hadoop-aws.version>3.1.1.7.1.6.0-297</hadoop-aws.version>
-        <hadoop-aws.scope>provided</hadoop-aws.scope>
+        <gcs-connector.version>2.1.2.7.1.6.0-297</gcs-connector.version>
+        <gcs-connector.scope>provided</gcs-connector.scope>
 
     </properties>
 
@@ -78,20 +75,12 @@
             <scope>${spark.scope}</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle -->
+        <!-- https://mvnrepository.com/artifact/com.google.cloud.bigdataoss/gcs-connector -->
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-bundle</artifactId>
-            <version>${aws-java-sdk-bundle.version}</version>
-            <scope>${aws-java-sdk-bundle.scope}</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-aws -->
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-aws</artifactId>
-            <version>${hadoop-aws.version}</version>
-            <scope>${hadoop-aws.scope}</scope>
+            <groupId>com.google.cloud.bigdataoss</groupId>
+            <artifactId>gcs-connector</artifactId>
+            <version>${gcs-connector.version}</version>
+            <scope>${gcs-connector.scope}</scope>
         </dependency>
 
     </dependencies>
@@ -148,7 +137,7 @@
                                 <!-- add Main-Class to manifest file -->
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.ranga.spark.s3.SparkGCSIntegrationExample</mainClass>
+                                    <mainClass>com.ranga.spark.gcs.SparkGCSIntegrationExample</mainClass>
                                 </transformer>
                             </transformers>
 
