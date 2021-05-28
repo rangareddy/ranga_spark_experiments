@@ -1,0 +1,21 @@
+{
+  "type": "record",
+  "namespace": "com.cloudera",
+  "name": "scala.com.ranga.spark.avro.bean.Employee",
+  "fields": [ {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "name",
+      "type": ["string","null"]
+    },
+    {
+      "name": "age",
+      "type": "int"
+    },
+    {
+      "name": "salary",
+      "type": "float"
+    } ]
+}

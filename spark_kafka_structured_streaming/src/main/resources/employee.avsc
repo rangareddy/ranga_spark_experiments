@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "Employee",
+  "namespace": "com.ranga",
+  "fields": [
+    {"name": "id","type": ["int", "null"]},
+    {"name": "name","type": ["string", "null"]},
+    {"name": "age","type": ["int", "null"]},
+    {"name": "salary","type": ["string", "null"]}
+  ]
+}
