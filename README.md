@@ -9,5 +9,4 @@
 7. [Spark Phoenix Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_phoenix_integration)
 8. [Spark Kafka Structured Streaming Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_kafka_structured_streaming)
 9. [Spark Avro Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark-avro-integration)
-10. [Spark Avro Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark-avro-integration)
-11. [Spark Parquet Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_parquet_integration)
+10. [Spark Parquet Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_parquet_integration)
