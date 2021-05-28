@@ -20,6 +20,7 @@ if __name__ == "__main__":
     # Creating the SparkSession object
     spark = SparkSession.appName(appName).builder.config(conf=conf).getOrCreate()
 
+    # GCS settings
     conf = spark.sparkContext._jsc.hadoopConfiguration()
     conf.set("fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem")
     conf.set("fs.AbstractFileSystem.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS")

@@ -45,3 +45,5 @@ src_managed/
 *.jar
 *.war
 *.ear
+
+ranga-spark-poc

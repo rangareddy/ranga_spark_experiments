@@ -29,6 +29,7 @@ object SparkGCSIntegrationExample {
     val spark = SparkSession.builder.config(sparkConf).getOrCreate
     println("SparkSession Created successfully")
 
+    // GCS settings
     val conf = spark.sparkContext.hadoopConfiguration
     conf.set("fs.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFileSystem")
     conf.set("fs.AbstractFileSystem.gs.impl", "com.google.cloud.hadoop.fs.gcs.GoogleHadoopFS")
