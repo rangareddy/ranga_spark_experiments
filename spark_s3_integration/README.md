@@ -6,8 +6,10 @@
   <img width="33%" height="250" src="https://fathomtech.io/blog/aws-s3-cloudfront/amazon-s3.png" style="float:right">
 </p>
 
-* [PySpark](https://github.com/rangareddy/ranga_spark_experiments/blob/master/spark_s3_integration/README.md#accessing-s3-from-pyspark)
-* [Spark Scala/Java](https://github.com/rangareddy/ranga_spark_experiments/blob/master/spark_s3_integration/README.md#accessing-s3-from-spark-scalajava)
+## Index
+
+1. [PySpark](https://github.com/rangareddy/ranga_spark_experiments/blob/master/spark_s3_integration/README.md#accessing-s3-from-pyspark)
+2. [Spark Scala/Java](https://github.com/rangareddy/ranga_spark_experiments/blob/master/spark_s3_integration/README.md#accessing-s3-from-spark-scalajava)
 
 ## Accessing S3 from PySpark
 
