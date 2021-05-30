@@ -3,7 +3,7 @@
 * [PySpark](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_s3_integration#pyspark-project-setup)
 * [Spark Scala/Java](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_s3_integration#spark-scalajava-project-setup)
 
-## Pyspark Project setup
+## Accessing S3 from PySpark
 
 ### Download the `spark_s3_integration` project
 ```sh
@@ -18,7 +18,7 @@ $ mkdir -p /apps/spark/spark_s3_integration
 $ chmod 755 /apps/spark/spark_s3_integration
 ```
 
-### Copy the `spark_s3_integration.py` python file and run script `run_pyspark_s3_integration_example.sh` to spark gateway node `/apps/spark/spark_s3_integration` directory
+### Copy the `spark_s3_integration.py` python file and run script `run_pyspark_s3_integration_example.sh` to spark gateway node `/apps/spark/spark_s3_integration` directory.
 ```sh
 $ scp spark_s3_integration.py root@node2.host.com:/apps/spark/spark_s3_integration
 $ scp run_pyspark_s3_integration_example.sh root@node2.host.com:/apps/spark/spark_s3_integration
@@ -32,10 +32,10 @@ Before running the shell script, update the following property values.
 <BUCKET_NAME> - yours aws s3 bucket name
 ```
 ```sh
-sh /apps/spark/spark_s3_integration/run_pyspark_s3_integration_example.sh
+$ sh /apps/spark/spark_s3_integration/run_pyspark_s3_integration_example.sh
 ```
 
-## Spark Scala/Java Project setup
+## Accessing S3 from Spark Scala/Java
 
 ### Download the `spark_s3_integration` project
 ```sh
@@ -61,7 +61,7 @@ $ scp target/spark_s3_integration-1.0.0-SNAPSHOT.jar root@node2.host.com:/apps/s
 $ scp run_spark_s3_integration_example.sh root@node2.host.com:/apps/spark/spark_s3_integration
 ```
 
-## Run the shell script.
+## Run the `run_spark_s3_integration_example.sh` shell script.
 Before running the shell script, update the following property values.
 ```sh
 <AWS_ACCESS_KEY_ID> - yours aws access key
