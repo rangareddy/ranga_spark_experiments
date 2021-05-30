@@ -1,7 +1,13 @@
 # Spark S3 Integration Example
 
-* [PySpark](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_s3_integration#pyspark-project-setup)
-* [Spark Scala/Java](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_s3_integration#spark-scalajava-project-setup)
+<p>
+  <img width="33%" height="250" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Apache_Spark_logo.svg/800px-Apache_Spark_logo.svg.png">
+  <img width="33%" height="250" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNXEcnxcKr8Ttd53Ibm5DO3Igsi0qWa8lHTav3fqugJyQ-w8E__29d2YtOuSKkykoQCD8&usqp=CAU">
+  <img width="33%" height="250" src="https://fathomtech.io/blog/aws-s3-cloudfront/amazon-s3.png" style="float:right">
+</p>
+
+* [PySpark](https://github.com/rangareddy/ranga_spark_experiments/blob/master/spark_s3_integration/README.md#accessing-s3-from-pyspark)
+* [Spark Scala/Java](https://github.com/rangareddy/ranga_spark_experiments/blob/master/spark_s3_integration/README.md#accessing-s3-from-spark-scalajava)
 
 ## Accessing S3 from PySpark
 
