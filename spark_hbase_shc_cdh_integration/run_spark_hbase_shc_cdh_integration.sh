@@ -2,9 +2,9 @@
 
 echo "Submitting the SparkHBaseIntegrationApp"
 
-sudo -u spark spark-submit --class com.ranga.spark.hbase.SparkHBaseIntegrationApp \
+spark-submit --class com.ranga.spark.hbase.SparkHBaseIntegrationApp \
   --master yarn \
-  --deploy-mode client \
+  --deploy-mode cluster \
   --driver-memory 1g \
   --executor-memory 2g \
   --executor-cores 5 \
