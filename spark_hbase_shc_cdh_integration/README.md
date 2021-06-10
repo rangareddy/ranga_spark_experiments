@@ -2,15 +2,15 @@
 
 ## Create and Insert the data to `employee` table in HBase
 
-1). Login to HBase Shell
+### Login to HBase Shell
 ```sh
 hbase shell
 ```
-2). Create the HBase table(s) using following commands:
+### Create the HBase table(s) using following commands:
 ```sh
 create 'employee', 'per', 'prof'
 ```
-3). Insert the data 
+### Insert the data 
 ```sh
 put 'employee','1','per:name','Ranga'
 put 'employee','1','per:age','32'
@@ -22,7 +22,7 @@ put 'employee','2','per:age','3'
 put 'employee','2','prof:designation','Junior Software Engineer'
 put 'employee','2','prof:salary','80000'
 ```
-4). Verify the HBase table data
+### Verify the HBase table data
 ```
 scan 'employee'
 ROW                                                              COLUMN+CELL
@@ -38,118 +38,48 @@ ROW                                                              COLUMN+CELL
 Took 0.0991 seconds
 ```
 
-## Building the shc-core project.
+## Building the `shc-core` project.
 
-5). Add the **shc-core** dependency to the **pom.xml** file.
-```xml
- <dependency>
-    <groupId>com.hortonworks</groupId>
-    <artifactId>shc-core</artifactId>
-    <version>1.1.1-2.1-s_2.11</version>
-</dependency>
-```
-Add hortonworks central repository to **pom.xml** file.
-```xml
-<repositories>
-
-    <!-- Hortonworks repository -->
-    <repository>
-        <id>public</id>
-        <url>http://repo.hortonworks.com/content/groups/public/</url>
-    </repository>
-
-</repositories>
+```sh
+$ git clone https://github.com/hortonworks-spark/shc.git
+$ cd shc/
+$ mvn clean install -DskipTests
 ```
 
-6). Create the SparkSession
-```
-val sparkConf = new SparkConf().setAppName(appName).setIfMissing("spark.master", "local[4]")
-val spark = SparkSession.builder.config(sparkConf).getOrCreate()
-```
-
-7). Define the both input and output tables HBase catalog.
-```
-     def inputCatalog = s"""{
-                            |"table":{"namespace":"default", "name":"table1"},
-                            |"rowkey":"key",
-                            |"columns":{
-                            |"key":{"cf":"rowkey", "col":"key", "type":"string"},
-                            |"city":{"cf":"addr", "col":"city", "type":"string"},
-                            |"state":{"cf":"addr", "col":"state", "type":"string"},
-                            |"numb":{"cf":"order", "col":"numb", "type":"string"}
-                            |}
-                            |}""".stripMargin
-    
-     def outputCatalog = s"""{
-                            |"table":{"namespace":"default", "name":"table2"},
-                            |"rowkey":"key",
-                            |"columns":{
-                            |"key":{"cf":"rowkey", "col":"key", "type":"string"},
-                            |"city":{"cf":"addr", "col":"city", "type":"string"},
-                            |"state":{"cf":"addr", "col":"state", "type":"string"},
-                            |"numb":{"cf":"order", "col":"numb", "type":"string"}
-                            |}
-                            |}""".stripMargin
+## Create the application deployment directory in spark gateway node. for example `/apps/spark/spark-hbase/`.
+```sh
+$ ssh username@node2.host.com
+$ mkdir -p /apps/spark/spark-hbase/
+$ chmod 755 /apps/spark/spark-hbase/
 ```
 
-8). Create the DataFrame using inputCatalog to read the data from HBase.
-
-```
-val inputTableDF = spark.read.options(Map(HBaseTableCatalog.tableCatalog->inputCatalog)).format(dataSourceFormat).load().cache()
-```
-9). Define useful method to print the DataFrame details.
-```
-    // Used to print the DataFrame information
-    def printSchemaInfo(df: DataFrame) : Unit = {
-        df.printSchema()
-        df.show(false)
-        println(s"Total records ${df.count()}")
-    }
-```
-10). Print the input DataFrame details.
-```
-    printSchemaInfo(inputTableDF)
+## Download the `spark_hbase_shc_cdh_integration` project.
+```sh
+$ git clone https://github.com/rangareddy/ranga_spark_experiments.git
+$ cd ranga_spark_experiments/spark_hbase_shc_cdh_integration
 ```
 
-11). Create a temporary table and add the filter.
-```
-    inputTableDF.createOrReplaceTempView("table1_data")
-    val outputTableDF = spark.sql("select * from table1_data where state='TX'")
+### Build the `spark_hbase_shc_cdh_integration` application.
+
+> Before building the project update your spark version acording to your cluster version.
+
+```sh
+$ mvn clean package -DskipTests
 ```
 
-12). Print the output DataFrame details.
-```
-   printSchemaInfo(outputTableDF)
-```
-
-13). Build the application
-```shell script
-mvn clean package
+### Copy the `spark_hbase_shc_integration-1.0.0-SNAPSHOT.jar` uber jar and run script `run_spark_hbase_shc_cdh_integration.sh` to spark gateway node `/apps/spark/spark-hbase/` directory.
+```sh
+$ scp target/spark_hbase_shc_integration-1.0.0-SNAPSHOT.jar root@node2.host.com:/apps/spark/spark-hbase/
+$ scp run_spark_hbase_shc_cdh_integration.sh root@node2.host.com:/apps/spark/spark-hbase/
 ```
 
-14). login to edge node and create the following folder
-```shell script
-mkdir -p /usr/apps/spark/spark-hbase
+### Login to gateway node and run the `run_spark_hbase_shc_cdh_integration.sh` shell script.
+```sh
+sh /apps/spark/spark-hbase/run_spark_hbase_shc_cdh_integration.sh
 ```
 
-15). Deploy the application into edge node.
-```shell script
-scp -C target/spark-hbase-integration-1.0.0-SNAPSHOT.jar username@edgenode:/usr/apps/spark/spark-hbase/ 
-``` 
+### Spark Output
 
-16). Run the Spark Application using following command.
-```shell script
-spark-submit --class com.ranga.spark.hbase.SparkHBaseIntegrationApp \
-  --master yarn \
-  --deploy-mode cluster \
-  --driver-memory 1g \
-  --executor-memory 2g \
-  --executor-cores 5 \
-  --files /etc/hbase/conf/hbase-site.xml \
-  /usr/apps/spark/spark-hbase/spark-hbase-integration-1.0.0-SNAPSHOT.jar
-```
-
-17). Output
 ```sh
 root
  |-- key: string (nullable = true)
@@ -165,4 +95,3 @@ root
 |2  |Nishanth|3  |Junior Software Engineer|80000 |
 +---+--------+---+------------------------+------+
 ```
-
