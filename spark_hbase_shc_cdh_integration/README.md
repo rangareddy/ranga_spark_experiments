@@ -61,7 +61,7 @@ $ cd ranga_spark_experiments/spark_hbase_shc_cdh_integration
 
 ### Build the `spark_hbase_shc_cdh_integration` application.
 
-> Before building the project update your spark version acording to your cluster version.
+> Before building the project update your spark version according to your cluster version.
 
 ```sh
 $ mvn clean package -DskipTests
