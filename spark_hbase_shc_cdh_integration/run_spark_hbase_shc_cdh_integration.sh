@@ -8,6 +8,7 @@ spark-submit --class com.ranga.spark.hbase.SparkHBaseIntegrationApp \
   --driver-memory 1g \
   --executor-memory 2g \
   --executor-cores 5 \
+  --files /etc/hbase/conf/hbase-site.xml \
   /apps/spark/spark-hbase/spark_hbase_shc_integration-1.0.0-SNAPSHOT.jar
 
 echo "SparkHBaseIntegrationApp submitted successfully."
