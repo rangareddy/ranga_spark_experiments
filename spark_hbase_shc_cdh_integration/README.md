@@ -38,6 +38,8 @@ ROW                                                              COLUMN+CELL
 Took 0.0991 seconds
 ```
 
+## Building the shc-core project.
+
 5). Add the **shc-core** dependency to the **pom.xml** file.
 ```xml
  <dependency>
