@@ -38,19 +38,19 @@ ROW                                                              COLUMN+CELL
 Took 0.0991 seconds
 ```
 
+## Create the application deployment directory in spark gateway node. for example `/apps/spark/spark-hbase/`.
+```sh
+$ ssh username@node2.host.com
+$ mkdir -p /apps/spark/spark-hbase/
+$ chmod 755 /apps/spark/spark-hbase/
+```
+
 ## Building the `shc-core` project.
 
 ```sh
 $ git clone https://github.com/hortonworks-spark/shc.git
 $ cd shc/
 $ mvn clean install -DskipTests
-```
-
-## Create the application deployment directory in spark gateway node. for example `/apps/spark/spark-hbase/`.
-```sh
-$ ssh username@node2.host.com
-$ mkdir -p /apps/spark/spark-hbase/
-$ chmod 755 /apps/spark/spark-hbase/
 ```
 
 ## Download the `spark_hbase_shc_cdh_integration` project.
