@@ -40,7 +40,7 @@ $ cd ranga_spark_experiments/spark_hbase_cdh_integration
 
 ### Build the `spark_hbase_cdh_integration` application.
 
-> Before building the project update your spark cdh version according to your cluster version.
+> Before building the project update your spark & hive cdh version according to your cluster version.
 
 ```sh
 $ mvn clean package -DskipTests
@@ -54,7 +54,7 @@ $ scp run_spark_hbase_cdh_integration.sh root@node2.host.com:/apps/spark/spark-h
 
 ### Login to gateway node and run the `run_spark_hbase_cdh_integration.sh` shell script.
 ```sh
-sh /apps/spark/spark-hbase/run_spark_hbase_cdh_integration.sh
+$ sh /apps/spark/spark-hbase/run_spark_hbase_cdh_integration.sh
 ```
 
 ### Spark Output
