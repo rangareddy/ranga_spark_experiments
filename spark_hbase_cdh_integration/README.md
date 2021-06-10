@@ -1,100 +1,62 @@
-# Spark HBase Integration
+# Spark HBase CDH Integration
 
-## HDP - Spark HBase Integration
+## Create and Insert the data to `employees` table in HBase
 
-### Launch HBase Shell and create an Employee table
-```
-# hbase shell
-# create 'employees', 'e'
-```
-
-### Testing the Application using spark-shell
-
-#### Launch the spark-shell
+### Login to HBase Shell
 ```sh
-spark-shell --master yarn --executor-cores 5 --deploy-mode client \
---jars /usr/hdp/current/hbase-client/lib/hbase-client.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-common.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-server.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-mapreduce.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-protocol.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-protocol-shaded.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-spark.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-zookeeper.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-hadoop2-compat.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-shaded-netty-2.2.0.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-shaded-protobuf-2.2.0.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-shaded-miscellaneous-2.2.0.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-replication.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-procedure.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-metrics.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-http.jar,\
-/usr/hdp/current/hbase-client/lib/hbase-hadoop-compat.jar,\
-/usr/hdp/current/hbase-client/lib/phoenix-server.jar \
---files /etc/hbase/conf/hbase-site.xml
+hbase shell
 ```
-
-#### Execute the following spark code in spark-shell
-```scala
-import org.apache.hadoop.hbase.spark.HBaseContext
-import org.apache.hadoop.hbase.HBaseConfiguration
-import org.apache.hadoop.fs.Path
-
-val conf = HBaseConfiguration.create()
-conf.addResource(new Path("/etc/hbase/conf/hbase-site.xml"))
-new HBaseContext(spark.sparkContext, conf)
-
-case class Employee(id:Long, name: String, age: Integer, salary: Float)
-
-import spark.implicits._
-var employeeDS = Seq(
-Employee(1L, "Ranga Reddy", 32, 80000.5f),
-Employee(2L, "Nishanth Reddy", 3, 180000.5f),
-Employee(3L, "Raja Sekhar Reddy", 59, 280000.5f)
-).toDS()
-
-val columnMapping = "id Long :key, name STRING e:name, age Integer e:age, salary FLOAT e:salary"
-val format = "org.apache.hadoop.hbase.spark"
-val tableName = "employees"
-
-// write the data to hbase table
-employeeDS.write.format(format).option("hbase.columns.mapping",columnMapping).option("hbase.table", tableName).save()
-
-// read the data from hbase table
-val df = spark.read.format(format).option("hbase.columns.mapping",columnMapping).option("hbase.table", tableName).load()
-df.show(truncate=false)
-```
-
-### Testing the Application using spark-submit
-
-#### Building the application
+### Create the HBase table(s) using following commands:
 ```sh
-mvn clean package -DskipTests
+create 'employees', 'e'
 ```
 
-#### Login to edge node and create the following directory
+## Create the application deployment directory in spark gateway node. for example `/apps/spark/spark-hbase/`.
 ```sh
-mkdir -p /usr/apps/spark/spark-hbase/
+$ ssh username@node2.host.com
+$ mkdir -p /apps/spark/spark-hbase/
+$ chmod 755 /apps/spark/spark-hbase/
 ```
 
-#### copy the jar and run script to edge node
+## Download the `spark_hbase_cdh_integration` project.
 ```sh
-scp target/spark-hase-integration-1.0.0-SNAPSHOT.jar username@hostname:/usr/apps/spark/spark-hbase/
-scp run_spark_hbase_integration.sh username@hostname:/usr/apps/spark/spark-hbase/
+$ git clone https://github.com/rangareddy/ranga_spark_experiments.git
+$ cd ranga_spark_experiments/spark_hbase_cdh_integration
 ```
 
-#### Run the script
+### Build the `spark_hbase_cdh_integration` application.
+
+> Before building the project update your spark version according to your cluster version.
+
 ```sh
-sh run_spark_hbase_integration.sh
+$ mvn clean package -DskipTests
 ```
 
-### HBase output in spark-shell
+### Copy the `spark_hbase_cdh_integration-1.0.0-SNAPSHOT.jar` uber jar and run script `run_spark_hbase_cdh_integration.sh` to spark gateway node `/apps/spark/spark-hbase/` directory.
 ```sh
-+---+-----------------+--------+---+
-|age|name             |salary  |id |
-+---+-----------------+--------+---+
-|32 |Ranga Reddy      |80000.5 |1  |
-|3  |Nishanth Reddy   |180000.5|2  |
-|59 |Raja Sekhar Reddy|280000.5|3  |
-+---+-----------------+--------+---+
+$ scp target/spark_hbase_cdh_integration-1.0.0-SNAPSHOT.jar root@node2.host.com:/apps/spark/spark-hbase/
+$ scp run_spark_hbase_cdh_integration.sh root@node2.host.com:/apps/spark/spark-hbase/
+```
+
+### Login to gateway node and run the `run_spark_hbase_cdh_integration.sh` shell script.
+```sh
+sh /apps/spark/spark-hbase/run_spark_hbase_shc_cdh_integration.sh
+```
+
+### Spark Output
+
+```sh
+root
+ |-- key: string (nullable = true)
+ |-- name: string (nullable = true)
+ |-- age: string (nullable = true)
+ |-- designation: string (nullable = true)
+ |-- salary: string (nullable = true)
+
++---+--------+---+------------------------+------+
+|key|name    |age|designation             |salary|
++---+--------+---+------------------------+------+
+|1  |Ranga   |32 |Software Engineer       |60000 |
+|2  |Nishanth|3  |Junior Software Engineer|80000 |
++---+--------+---+------------------------+------+
 ```

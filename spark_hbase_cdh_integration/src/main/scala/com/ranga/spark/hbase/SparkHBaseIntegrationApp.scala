@@ -13,12 +13,12 @@ object SparkHBaseIntegrationApp extends App with Serializable {
   val spark: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
   println("SparkSession created")
 
+  // Create the HBaseContext
   val conf = HBaseConfiguration.create()
   conf.addResource(new Path("/etc/hbase/conf/hbase-site.xml"))
   new HBaseContext(spark.sparkContext, conf)
 
   case class Employee(id:Long, name: String, age: Integer, salary: Float)
-
   import spark.implicits._
   
   var employeeDS = Seq(
@@ -31,12 +31,15 @@ object SparkHBaseIntegrationApp extends App with Serializable {
   val format = "org.apache.hadoop.hbase.spark"
   val tableName = "employees"
 
-  // write the data to hbase table
+  // Write the data to hbase table
   employeeDS.write.format(format).option("hbase.columns.mapping", columnMapping).option("hbase.table", tableName).save()
 
-  // read the data from hbase table
+  // Read the data from hbase table
   val df = spark.read.format(format).option("hbase.columns.mapping", columnMapping).option("hbase.table", tableName).load()
+  df.printSchema()
   df.show(truncate=false)
 
+  // Close the SparkSession
   spark.close()
+  println("SparkSession closed")
 }
