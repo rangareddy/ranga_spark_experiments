@@ -11,5 +11,6 @@
 9. [Spark Avro Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark-avro-integration)
 10. [Spark Parquet Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_parquet_integration)
 11. [Spark Hive HBase Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_hive_hbase_integration)
+12. [Spark HBase SHC CDH Integration Example](https://github.com/rangareddy/ranga_spark_experiments/tree/master/spark_hbase_shc_cdh_integration)
 
 
