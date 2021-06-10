@@ -1,44 +1,41 @@
-# Spark HBase Integration using Spark Hortonworks Connector (SHC)
+# CDH Spark HBase Integration using Spark Hortonworks Connector (SHC)
 
-## Creating Tables in HBase
+## Create and Insert the data to `employee` table in HBase
+
 1). Login to HBase Shell
-```
+```sh
 hbase shell
 ```
 2). Create the HBase table(s) using following commands:
-```hbase
-create 'table1', {NAME=>'addr'}, {NAME=>'order'}
-
-put   'table1',  'jsmith',  'addr:state', 'TN'
-put   'table1',  'jsmith',  'addr:city', 'nashville'
-put   'table1',  'jsmith',  'order:numb', '1234'
-put   'table1',  'tsimmons',  'addr:city', 'dallas'
-put   'table1',  'tsimmons',  'addr:state', 'TX'
-put   'table1',  'tsimmons', 'order:numb', '1831'
-put   'table1',  'jsmith',  'addr:state', 'CO'
-put   'table1',  'jsmith',  'addr:city', 'denver'
-put   'table1',  'jsmith',  'order:numb', '6666'
-put   'table1',  'njones',  'addr:state', 'TX'
-put   'table1',  'njones',  'addr:city', 'miami'
-put   'table1',  'njones',  'order:numb', '5555'
-put   'table1',  'amiller', 'addr:state', 'TX'
-put   'table1',  'amiller', 'addr:city', 'dallas'
-put   'table1',  'amiller', 'order:numb', '9986'
-
-create 'table2', {NAME=>'addr'}, {NAME=>'order'}
+```sh
+create 'employee', 'per', 'prof'
 ```
+3). Insert the data 
+```sh
+put 'employee','1','per:name','Ranga'
+put 'employee','1','per:age','32'
+put 'employee','1','prof:designation','Software Engineer'
+put 'employee','1','prof:salary','60000'
 
-3). Verify the HBase table data
+put 'employee','2','per:name','Nishanth'
+put 'employee','2','per:age','3'
+put 'employee','2','prof:designation','Junior Software Engineer'
+put 'employee','2','prof:salary','80000'
 ```
-scan 'table1'
-scan 'table2'
+4). Verify the HBase table data
 ```
-
-4). Check **hbase-site.xml** file is present in Spark configuration directory(/usr/hdp/current/spark2-client/conf/) or not. 
-If it is not present copy the **hbase-site.xml** and place it in under **spark/conf** directory.
-
-```
-# cp /usr/hdp/current/hbase-client/conf/hbase-site.xml /usr/hdp/current/spark2-client/conf/
+scan 'employee'
+ROW                                                              COLUMN+CELL
+ 1                                                               column=per:age, timestamp=1623301157496, value=32
+ 1                                                               column=per:name, timestamp=1623301157444, value=Ranga
+ 1                                                               column=prof:designation, timestamp=1623301157546, value=Software Engineer
+ 1                                                               column=prof:salary, timestamp=1623301157612, value=60000
+ 2                                                               column=per:age, timestamp=1623301157705, value=3
+ 2                                                               column=per:name, timestamp=1623301157671, value=Nishanth
+ 2                                                               column=prof:designation, timestamp=1623301157727, value=Junior Software Engineer
+ 2                                                               column=prof:salary, timestamp=1623301161097, value=80000
+2 row(s)
+Took 0.0991 seconds
 ```
 
 5). Add the **shc-core** dependency to the **pom.xml** file.
@@ -143,10 +140,10 @@ scp -C target/spark-hbase-integration-1.0.0-SNAPSHOT.jar username@edgenode:/usr/
 spark-submit --class com.ranga.spark.hbase.SparkHBaseIntegrationApp \
   --master yarn \
   --deploy-mode cluster \
-  --executor-memory 512MB \
   --driver-memory 1g \
   --executor-memory 2g \
-  --executor-cores 1 \
+  --executor-cores 5 \
+  --files /etc/hbase/conf/hbase-site.xml \
   /usr/apps/spark/spark-hbase/spark-hbase-integration-1.0.0-SNAPSHOT.jar
 ```
 
