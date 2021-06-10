@@ -61,16 +61,16 @@ sh /apps/spark/spark-hbase/run_spark_hbase_cdh_integration.sh
 
 ```sh
 root
- |-- key: string (nullable = true)
- |-- name: string (nullable = true)
- |-- age: string (nullable = true)
  |-- designation: string (nullable = true)
+ |-- age: string (nullable = true)
+ |-- name: string (nullable = true)
  |-- salary: string (nullable = true)
+ |-- id: string (nullable = true)
 
-+---+--------+---+------------------------+------+
-|key|name    |age|designation             |salary|
-+---+--------+---+------------------------+------+
-|1  |Ranga   |32 |Software Engineer       |60000 |
-|2  |Nishanth|3  |Junior Software Engineer|80000 |
-+---+--------+---+------------------------+------+
++------------------------+---+--------+------+---+
+|designation             |age|name    |salary|id |
++------------------------+---+--------+------+---+
+|Software Engineer       |32 |Ranga   |60000 |1  |
+|Junior Software Engineer|3  |Nishanth|80000 |2  |
++------------------------+---+--------+------+---+
 ```
