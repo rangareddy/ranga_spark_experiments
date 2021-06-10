@@ -8,7 +8,7 @@ sudo -u spark spark-submit --class com.ranga.spark.hbase.SparkHBaseIntegrationAp
   --driver-memory 1g \
   --executor-memory 2g \
   --executor-cores 5 \
-  /usr/apps/spark/spark-hbase/spark_hbase_shc_integration-1.0.0-SNAPSHOT.jar
+  /apps/spark/spark-hbase/spark_hbase_shc_integration-1.0.0-SNAPSHOT.jar
 
 echo "SparkHBaseIntegrationApp submitted successfully."
 
