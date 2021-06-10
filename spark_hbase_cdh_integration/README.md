@@ -6,9 +6,23 @@
 ```sh
 hbase shell
 ```
+
 ### Create the HBase table(s) using following commands:
 ```sh
-create 'employees', 'e'
+create 'employee', 'per', 'prof'
+```
+
+### Insert the data
+```sh
+put 'employee','1','per:name','Ranga'
+put 'employee','1','per:age','32'
+put 'employee','1','prof:designation','Software Engineer'
+put 'employee','1','prof:salary','60000'
+
+put 'employee','2','per:name','Nishanth'
+put 'employee','2','per:age','3'
+put 'employee','2','prof:designation','Junior Software Engineer'
+put 'employee','2','prof:salary','80000'
 ```
 
 ## Create the application deployment directory in spark gateway node. for example `/apps/spark/spark-hbase/`.
@@ -26,7 +40,7 @@ $ cd ranga_spark_experiments/spark_hbase_cdh_integration
 
 ### Build the `spark_hbase_cdh_integration` application.
 
-> Before building the project update your spark version according to your cluster version.
+> Before building the project update your spark cdh version according to your cluster version.
 
 ```sh
 $ mvn clean package -DskipTests
@@ -40,7 +54,7 @@ $ scp run_spark_hbase_cdh_integration.sh root@node2.host.com:/apps/spark/spark-h
 
 ### Login to gateway node and run the `run_spark_hbase_cdh_integration.sh` shell script.
 ```sh
-sh /apps/spark/spark-hbase/run_spark_hbase_shc_cdh_integration.sh
+sh /apps/spark/spark-hbase/run_spark_hbase_cdh_integration.sh
 ```
 
 ### Spark Output
