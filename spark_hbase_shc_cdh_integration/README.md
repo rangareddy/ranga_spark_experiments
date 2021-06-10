@@ -1,4 +1,4 @@
-# CDH Spark HBase Integration using Spark Hortonworks Connector (SHC)
+# CDH Spark HBase Integration using SHC
 
 ## Create and Insert the data to `employee` table in HBase
 
