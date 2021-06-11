@@ -106,17 +106,12 @@ ROW                                             COLUMN+CELL
 ```sh  
 sudo -u spark spark-shell \
   --master yarn \
-  --jars /opt/cloudera/parcels/CDH/jars/phoenix5-spark-*.jar,/opt/cloudera/parcels/CDH/jars/phoenix-client-hbase-*.jar \
+  --jars /opt/cloudera/parcels/CDH/lib/phoenix_connectors/phoenix5-spark-*-shaded.jar \
   --files /etc/hbase/conf/hbase-site.xml
 ```
 
 ### Step8: Run the Spark code in spark-shell
 ```scala
-import org.apache.spark.sql.{SQLContext, SparkSession}
-import org.apache.spark.SparkConf
-
-val conf = new SparkConf().setAppName("Phoenix Spark connector example").setIfMissing("spark.master", "local[*]")
-val spark: SparkSession = SparkSession.builder().config(conf).getOrCreate()
 val sqlContext = spark.sqlContext
 
 val zkUrl="phoenix-server:2181"
@@ -409,5 +404,31 @@ _________________
 **References:**
 * https://blogs.apache.org/phoenix/entry/spark_integration_in_apache_phoenix
 * https://phoenix.apache.org/phoenix_spark.html
-* https://docs.cloudera.com/runtime/7.2.9/phoenix-access-data/topics/phoenix-understanding-spark-connector.html
+* https://docs.cloudera.com/runtime/7.2.9/phoenix-access-data/topics/phoenix-configure-spark-connector.html
 * https://docs.cloudera.com/documentation/enterprise/6/6.3/topics/phoenix_spark_connector.html
+
+### SparkPhoenixIntegration.scala
+
+```scala
+import org.apache.spark.sql.{SQLContext, SparkSession}
+import org.apache.spark.SparkConf
+
+object SparkPhoenixIntegration extends App {
+
+  val conf = new SparkConf().setAppName("Spark Phoenix Integration").setIfMissing("spark.master", "local[*]")
+  val spark = SparkSession.builder().config(conf).getOrCreate()
+  val sqlContext = spark.sqlContext
+
+  val zkUrl="phoenix-server:2181"
+  //val zkUrl="phoenix-server:2181/hbase-secure"
+
+  val employeeDf = sqlContext.load(
+    "org.apache.phoenix.spark",
+    Map("table" -> "EMPLOYEE", "zkUrl" -> zkUrl)
+  )
+
+  employeeDf.show(4)
+  spark.close()
+  
+}
+```
