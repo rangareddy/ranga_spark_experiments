@@ -104,9 +104,9 @@ ROW                                             COLUMN+CELL
 
 ### Step7: Launch Spark-shell by providing the phoenix-spark and phoenix-client jar
 ```sh  
-spark-shell \
+sudo -u spark spark-shell \
   --master yarn \
-  --jars /opt/cloudera/parcels/CDH/lib/phoenix/lib/phoenix-spark*.jar,/opt/cloudera/parcels/CDH/lib/phoenix/phoenix-client.jar \
+  --jars /opt/cloudera/parcels/CDH/jars/phoenix5-spark-*.jar,/opt/cloudera/parcels/CDH/jars/phoenix-client-hbase-*.jar \
   --files /etc/hbase/conf/hbase-site.xml
 ```
 
