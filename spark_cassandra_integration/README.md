@@ -1,11 +1,5 @@
 # Spark Cassandra Integration
 
-```sh
-Create a keyspace called “test_spark” in Cassandra
-create the table test_spark.test (value int PRIMARY KEY); in the test_spark keycap
-Insert some data (INSERT INTO test_spark (value) VALUES (1);)
-```
-
 ## Cassandra schema
 
 ### Create a keyspace
@@ -39,41 +33,3 @@ cqlsh:ranga_keyspace> SELECT * FROM ranga_keyspace.employees;
 (4 rows)
 ```
 
-## Loading up the Spark-Shell
-```sh
-spark-shell --conf spark.cassandra.connection.host=127.0.0.1 \
-                            --packages com.datastax.spark:spark-cassandra-connector_2.11:2.4.1
-```
-
-### Enable Cassandra-specific functions
-```sh
-import com.datastax.spark.connector._
-import org.apache.spark.sql.cassandra._
-```
-
-### Saving data from RDD to Cassandra
-```sh
-
-case class Employee(id:Long, name: String, age: Integer, salary: Float)
-import spark.implicits._
-var employeeDS = Seq(
-    Employee(1L, "Ranga Reddy", 32, 80000.5f),
-    Employee(2L, "Nishanth Reddy", 3, 180000.5f),
-    Employee(3L, "Raja Sekhar Reddy", 59, 280000.5f)
-).toDS()
-
-val collection = sc.parallelize(Seq(("key3", 3), ("key4", 4)))
-collection.saveToCassandra("test", "kv", SomeColumns("key", "value")) 
-
-df.write
-  .format("org.apache.spark.sql.cassandra")
-  .options(Map("table" -> "words_copy", "keyspace" -> "test", "cluster" -> "cluster_B"))
-  .save()
-
-```
-
-### Loading and analyzing data from Cassandra
-```sh
-val employeeDF = spark.read.format("org.apache.spark.sql.cassandra").options(Map( "keyspace" -> "ranga_keyspace", "table" -> "employees")).load()
-employeeDF.show(truncate=false)
-```
