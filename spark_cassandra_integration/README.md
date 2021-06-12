@@ -2,15 +2,22 @@
 
 ## Cassandra schema
 
+### Launch `cqlsh` shell
+```sh
+cqlsh
+```
+
 ### Create a keyspace
 ```sql
 cqlsh> CREATE KEYSPACE IF NOT EXISTS ranga_keyspace WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1 };
 cqlsh> use ranga_keyspace;
 ```
+
 ### Create a table
 ```sql
 cqlsh:ranga_keyspace> CREATE TABLE IF NOT EXISTS ranga_keyspace.employees(id bigint PRIMARY KEY, name TEXT, age int, salary float);
 ```
+
 ### Insert the data
 ```sql
 cqlsh:ranga_keyspace> INSERT INTO ranga_keyspace.employees(id, name, age, salary) VALUES (1, 'Ranga Reddy', 33, 50000.00);
@@ -32,4 +39,3 @@ cqlsh:ranga_keyspace> SELECT * FROM ranga_keyspace.employees;
 
 (4 rows)
 ```
-
