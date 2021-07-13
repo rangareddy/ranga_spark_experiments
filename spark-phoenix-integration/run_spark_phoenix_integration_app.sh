@@ -27,6 +27,6 @@ spark-submit \
 	--principal ${PRINCIPAL} \
 	--keytab ${KEYTAB} \
  	--class com.ranga.spark.phoenix.SparkPhoenixIntegrationApp \
-	/apps/spark/spark-phoenix-integration/spark-phoenix-integration-1.0.0-SNAPSHOT.jar
+	/apps/spark/spark-phoenix-integration/spark-phoenix-integration-1.0.0-SNAPSHOT.jar ${PHOENIX_SERVER_URL},${TABLE_NAME}
 
 echo "Finished <$0> script"
