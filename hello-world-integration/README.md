@@ -1,10 +1,9 @@
 # Hello World Integration
 
 <div>
-
         <img src="https://github.com/rangareddy/ranga-logos/blob/main/frameworks/spark/spark_logo.png?raw=true" height="200" width="250"/>
-
 </div>
+
 
 ## Prerequisites
 

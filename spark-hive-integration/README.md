@@ -1,12 +1,11 @@
 # Spark Hive Integration
 
 <div>
-
         <img src="https://github.com/rangareddy/ranga-logos/blob/main/frameworks/spark/spark_logo.png?raw=true" height="200" width="250"/>
         <img src="https://github.com/rangareddy/ranga-logos/blob/main/others/plus_logo.png?raw=true" height="200" width="250"/>
         <img src="https://github.com/rangareddy/ranga-logos/blob/main/dbs/warehouse/hive/hive_logo.jpg?raw=true" height="200" width="250"/>
-
 </div>
+
 
 ## Prerequisites
 
