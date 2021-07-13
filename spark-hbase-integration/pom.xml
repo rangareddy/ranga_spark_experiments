@@ -7,26 +7,32 @@
     <groupId>com.ranga.spark.hbase</groupId>
     <artifactId>spark-hbase-integration</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>SparkHbase Application</name>
+    <name>Spark Hbase Integration</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.targetEncoding>UTF-8</project.build.targetEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <java.version>1.8</java.version>
-
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven-shade-plugin.version>3.2.3</maven-shade-plugin.version>
-        <scala-maven-plugin.version>4.3.1</scala-maven-plugin.version>
+        <!--<scala-maven-plugin.version>4.3.1</scala-maven-plugin.version>-->
+        <scala-maven-plugin.version>3.2.2</scala-maven-plugin.version>
+        <scalatest-maven-plugin.version>2.0.0</scalatest-maven-plugin.version>
+        
+		<scala.binary.version>2.11</scala.binary.version>
+		<spark.version>2.4.0.7.1.6.0-297</spark.version>
+		<spark.scope>provided</spark.scope>
+		<hbase.spark.version>1.0.0.7.1.6.0-297</hbase.spark.version>
+		<hbase.spark.scope>compile</hbase.spark.scope>
+		<java.version>1.8</java.version>
+		<scala.version>2.11.12</scala.version>
 
-        <scala.version>2.12.11</scala.version>
-        <scala.binary.version>2.12</scala.binary.version>
-
-        <spark.version>3.0.1</spark.version>
-        <spark.scope>compile</spark.scope>
+        <scalatest.version>3.0.8</scalatest.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
+    <!-- Developers -->
     <developers>
         <developer>
             <id>rangareddy</id>
@@ -35,21 +41,30 @@
         </developer>
     </developers>
 
+    <!-- Repositories -->
     <repositories>
         <repository>
-            <id>cldr-repo</id>
-            <name>Cloudera Public Repo</name>
-            <url>http://repository.cloudera.com/artifactory/cloudera-repos/</url>
-        </repository>
-        <repository>
-            <id>hdp-repo</id>
-            <name>Hortonworks Public Repo</name>
-            <url>http://repo.hortonworks.com/content/repositories/releases/</url>
-        </repository>
+			<id>central</id>
+			<name>Maven Central</name>
+			<url>https://repo1.maven.org/maven2</url>
+		</repository>
+
+		<repository>
+			<id>cldr-repo</id>
+			<name>Cloudera Public Repo</name>
+			<url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+		</repository>
+
+		<repository>
+			<id>hdp-repo</id>
+			<name>Hortonworks Public Repo</name>
+			<url>https://repo.hortonworks.com/content/repositories/releases/</url>
+		</repository>
     </repositories>
 
     <dependencies>
 
+        <!-- Scala Lang dependencies -->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
@@ -57,31 +72,53 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_${scala.binary.version}</artifactId>
-            <version>${spark.version}</version>
-            <scope>${spark.scope}</scope>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-compiler</artifactId>
+            <version>${scala.version}</version>
+        </dependency>
+        
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-core_${scala.binary.version}</artifactId>
+			<version>${spark.version}</version>
+			<scope>${spark.scope}</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-sql_${scala.binary.version}</artifactId>
+			<version>${spark.version}</version>
+			<scope>${spark.scope}</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hbase.connectors.spark</groupId>
+			<artifactId>hbase-spark</artifactId>
+			<version>${hbase.spark.version}</version>
+			<scope>${hbase.spark.scope}</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-streaming_${scala.binary.version}</artifactId>
+			<version>${spark.version}</version>
+			<scope>${spark.scope}</scope>
+		</dependency>
+
+        <!-- Scala Test dependencies -->
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_${scala.binary.version}</artifactId>
+            <version>${scalatest.version}</version>
+            <scope>test</scope>
         </dependency>
 
+        <!-- Junit dependencies -->
         <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-catalyst_${scala.binary.version}</artifactId>
-            <version>${spark.version}</version>
-            <scope>${spark.scope}</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-sql_${scala.binary.version}</artifactId>
-            <version>${spark.version}</version>
-            <scope>${spark.scope}</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-hive_${scala.binary.version}</artifactId>
-            <version>${spark.version}</version>
-            <scope>${spark.scope}</scope>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -97,6 +134,9 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <compilerArgs>
+                        <arg>-Xlint:all,-serial,-path</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 
@@ -136,10 +176,32 @@
                         <javacArg>${java.version}</javacArg>
                         <javacArg>-target</javacArg>
                         <javacArg>${java.version}</javacArg>
+                        <javacArg>-Xlint:all,-serial,-path</javacArg>
                     </javacArgs>
                 </configuration>
             </plugin>
 
+            <!-- ScalaTest Maven Plugin -->
+            <plugin>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest-maven-plugin</artifactId>
+                <version>${scalatest-maven-plugin.version}</version>
+                <configuration>
+                    <reportsDirectory> ${project.build.directory}/surefire-reports</reportsDirectory>
+                    <junitxml>.</junitxml>
+                    <filereports>spark-hbase-integrationTestSuites.txt</filereports>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Shade Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -155,7 +217,7 @@
                         <configuration>
                             <createDependencyReducedPom>true</createDependencyReducedPom>
                             <transformers>
-                                <!-- add Main-Class to manifest file -->
+                                <!-- Add Main Class to manifest file -->
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>com.ranga.spark.hbase.SparkHbaseIntegrationApp</mainClass>

@@ -1,6 +1,26 @@
-# spark-hwc-integration
+# Spark Hwc Integration
+
+<div>
+    <div style='float:left;padding: 10px;'>
+        <img src="https://github.com/rangareddy/ranga-logos/blob/main/frameworks/spark/spark_logo.png?raw=true" height="200" width="250"/>
+    </div>
+    <div style='float:left;padding: 10px;'>
+        <img src="https://github.com/rangareddy/ranga-logos/blob/main/others/plus_logo.png?raw=true" height="200" width="250"/>
+    </div>
+    <div style='float:left;padding: 10px;'>
+        <img src="https://github.com/rangareddy/ranga-logos/blob/main/dbs/warehouse/hive/hive_logo.jpg?raw=true" height="200" width="250"/>
+    </div>
+</div>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
 ## Prerequisites
+
+* Spark Version : 2.4.0.7.1.6.0-297
+* Hwc Version : 1.0.0.7.1.6.0-297
+* Java Version : 1.8
+* Scala Version : 2.11.12
+
+
 
 ## Login to spark gateway node (for example mynode.host.com) and create the application deployment directory `/apps/spark/spark-hwc-integration`.
 ```sh
@@ -27,8 +47,15 @@ $ scp target/spark-hwc-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/
 $ scp run_spark_hwc_integration_app.sh username@mynode.host.com:/apps/spark/spark-hwc-integration
 ```
 
-## Login to spark gateway node (for example mynode.host.com) and run the application using `run_spark_hwc_integration_app.sh` script.
-**Note:** Before running the application, check you have application running permissions or not.
+## Login to spark gateway node (for example mynode.host.com) and run the application using `run_spark_hwc_integration_app.sh` shell script.
+
+**Note(s):**
+* Before running the application, check do you have proper permissions to run the application.
+* Check is there any parameters needs to pass in `run_spark_hwc_integration_app.sh` shell script.
+* Update `hiveserver2_host` in `spark.sql.hive.hiveserver2.jdbc.url`
+* Update `metastore_uri` in `spark.hadoop.hive.metastore.uris`
+* Update `hive.server2.authentication.kerberos.principal` in `spark.sql.hive.hiveserver2.jdbc.url.principal`
+
 ```sh
 sh /apps/spark/spark-hwc-integration/run_spark_hwc_integration_app.sh
 ```

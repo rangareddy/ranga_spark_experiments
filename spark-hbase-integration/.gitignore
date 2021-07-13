@@ -40,8 +40,3 @@ src_managed/
 # Java, Scala, SBT
 *.class
 *.log
-
-# Package Files
-*.jar
-*.war
-*.ear
