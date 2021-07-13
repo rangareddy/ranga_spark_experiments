@@ -1,17 +1,12 @@
 # Spark Kafka Integration
 
 <div>
-    <div style='float:left;padding: 10px;'>
+
         <img src="https://github.com/rangareddy/ranga-logos/blob/main/frameworks/spark/spark_logo.png?raw=true" height="200" width="250"/>
-    </div>
-    <div style='float:left;padding: 10px;'>
         <img src="https://github.com/rangareddy/ranga-logos/blob/main/others/plus_logo.png?raw=true" height="200" width="250"/>
-    </div>
-    <div style='float:left;padding: 10px;'>
         <img src="https://github.com/rangareddy/ranga-logos/blob/main/frameworks/kafka/kafka_logo.png?raw=true" height="200" width="250"/>
-    </div>
+
 </div>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
 ## Prerequisites
 
