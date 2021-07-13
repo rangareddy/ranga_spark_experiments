@@ -31,9 +31,11 @@ public class SparkHwcIntegrationJavaApp implements Serializable {
 
         HiveWarehouseSession hive = HiveWarehouseSession.session(spark).build();
         logger.info("HiveWarehouseSession created successfully");
+
         String database_name = "hwc_db";
         String table_name = "employee";
         String database_table_name = database_name +"."+table_name;
+
         // Create a Database
         hive.createDatabase(database_name, true);
 
