@@ -19,10 +19,10 @@ public class SparkHwcIntegrationJavaApp implements Serializable {
 
     public static void main(String[] args) {
 
-		if(args.length > 3 ) {
-				System.out.println("Usage : SparkHwcIntegrationApp <HIVE_SERVER2_JDBC_URL> <HIVE_METASTORE_URI> <HIVE_SERVER2_AUTH_KERBEROS_PRINCIPAL>");
-				System.exit(0);
-		}
+        if(args.length > 3 ) {
+            System.err.println("Usage : SparkHwcIntegrationApp <HIVE_SERVER2_JDBC_URL> <HIVE_METASTORE_URI> <HIVE_SERVER2_AUTH_KERBEROS_PRINCIPAL>");
+            System.exit(0);
+        }
 
         String appName = "Spark Hwc Integration";
         
@@ -33,11 +33,11 @@ public class SparkHwcIntegrationJavaApp implements Serializable {
         SparkSession spark = SparkSession.builder().config(sparkConf).getOrCreate();
         logger.info("SparkSession created successfully");
 
+        HiveWarehouseSession hive = HiveWarehouseSession.session(spark).build();
+        logger.info("HiveWarehouseSession created successfully");
         String database_name = "hwc_db";
         String table_name = "employee";
         String database_table_name = database_name +"."+table_name;
-        HiveWarehouseSession hive = HiveWarehouseSession.session(spark).build();
-        logger.info("HiveWarehouseSession created successfully");
         // Create a Database
         hive.createDatabase(database_name, true);
 

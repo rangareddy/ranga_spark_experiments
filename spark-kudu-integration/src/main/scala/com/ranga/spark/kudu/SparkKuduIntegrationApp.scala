@@ -19,10 +19,10 @@ object SparkKuduIntegrationApp extends Serializable {
 
     def main(args: Array[String]): Unit = {
         
-		if(args.length > 1 ) {
-				System.out.println("Usage : SparkKuduIntegrationApp <KUDU_MASTER>");
-				System.exit(0);
-		}
+        if(args.length > 1 ) {
+            System.err.println("Usage : SparkKuduIntegrationApp <KUDU_MASTER>");
+            System.exit(0);
+        }
 
         val appName = "Spark Kudu Integration"
         

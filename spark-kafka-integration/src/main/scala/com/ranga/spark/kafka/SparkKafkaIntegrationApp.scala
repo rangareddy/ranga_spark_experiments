@@ -16,10 +16,10 @@ object SparkKafkaIntegrationApp extends Serializable {
 
     def main(args: Array[String]): Unit = {
         
-		if(args.length > 4 ) {
-				System.out.println("Usage : SparkKafkaIntegrationApp <KAFKA_BOOTSTRAP_SERVERS> <KAFKA_TOPIC_NAMES> <SSL_TRUSTSTORE_LOCATION> <SSL_TRUSTSTORE_PASSWORD>");
-				System.exit(0);
-		}
+        if(args.length > 4 ) {
+            System.err.println("Usage : SparkKafkaIntegrationApp <KAFKA_BOOTSTRAP_SERVERS> <KAFKA_TOPIC_NAMES> <SSL_TRUSTSTORE_LOCATION> <SSL_TRUSTSTORE_PASSWORD>");
+            System.exit(0);
+        }
 
         val appName = "Spark Kafka Integration"
         

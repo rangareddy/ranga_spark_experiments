@@ -16,10 +16,10 @@ object SparkPhoenixIntegrationApp extends Serializable {
 
     def main(args: Array[String]): Unit = {
         
-		if(args.length > 2 ) {
-				System.out.println("Usage : SparkPhoenixIntegrationApp <PHOENIX_SERVER_URL> <TABLE_NAME>");
-				System.exit(0);
-		}
+        if(args.length > 2 ) {
+            System.err.println("Usage : SparkPhoenixIntegrationApp <PHOENIX_SERVER_URL> <TABLE_NAME>");
+            System.exit(0);
+        }
 
         val appName = "Spark Phoenix Integration"
         

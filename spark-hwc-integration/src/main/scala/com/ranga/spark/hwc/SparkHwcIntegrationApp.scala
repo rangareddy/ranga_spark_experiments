@@ -18,10 +18,10 @@ object SparkHwcIntegrationApp extends Serializable {
 
     def main(args: Array[String]): Unit = {
         
-		if(args.length > 3 ) {
-				System.out.println("Usage : SparkHwcIntegrationApp <HIVE_SERVER2_JDBC_URL> <HIVE_METASTORE_URI> <HIVE_SERVER2_AUTH_KERBEROS_PRINCIPAL>");
-				System.exit(0);
-		}
+        if(args.length > 3 ) {
+            System.err.println("Usage : SparkHwcIntegrationApp <HIVE_SERVER2_JDBC_URL> <HIVE_METASTORE_URI> <HIVE_SERVER2_AUTH_KERBEROS_PRINCIPAL>");
+            System.exit(0);
+        }
 
         val appName = "Spark Hwc Integration"
         
