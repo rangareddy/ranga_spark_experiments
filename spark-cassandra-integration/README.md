@@ -3,14 +3,14 @@
 <div>
         <img src="https://github.com/rangareddy/ranga-logos/blob/main/frameworks/spark/spark_logo.png?raw=true" height="200" width="250"/>
         <img src="https://github.com/rangareddy/ranga-logos/blob/main/others/plus_logo.png?raw=true" height="200" width="250"/>
-        <img src="https://github.com/rangareddy/ranga-logos/blob/main/cloud/gcp/gcs_logo.png?raw=true" height="200" width="250"/>
+        <img src="https://github.com/rangareddy/ranga-logos/blob/main/dbs/nosql/cassandra/cassandra_logo.png?raw=true" height="200" width="250"/>
 </div>
 
 
 ## Prerequisites
 
 * Spark Version : 2.4.0.7.1.6.0-297
-* Spark-cassandra-connector Version : 3.0.0
+* Spark Cassandra Connector Version : 3.0.0
 * Java Version : 1.8
 * Scala Version : 2.11.12
 

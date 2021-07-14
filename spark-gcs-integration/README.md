@@ -10,7 +10,7 @@
 ## Prerequisites
 
 * Spark Version : 2.4.0.7.1.6.0-297
-* Gcs-connector Version : 2.1.2.7.1.6.0-297
+* Gcs Connector Version : 2.1.2.7.1.6.0-297
 * Java Version : 1.8
 * Scala Version : 2.11.12
 

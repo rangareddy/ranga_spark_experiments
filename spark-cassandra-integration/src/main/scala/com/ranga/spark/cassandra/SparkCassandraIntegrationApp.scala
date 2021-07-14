@@ -59,7 +59,6 @@ object SparkCassandraIntegrationApp extends Serializable {
         val empDF = spark.read.format(cassandraFormat).options(options).load()
         display(empDF)
 
-
         logger.info("<Spark Cassandra Integration> successfully finished")
 
         // Close the SparkSession
