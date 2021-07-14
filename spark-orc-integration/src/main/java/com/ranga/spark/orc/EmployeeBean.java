@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author Ranga Reddy
  * Version: 1.0
- * Created : 07/13/2021
+ * Created : 07/14/2021
  */
 
 public class EmployeeBean implements Serializable {

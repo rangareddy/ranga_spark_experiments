@@ -1,24 +1,75 @@
 package com.ranga.spark.cassandra
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SQLContext, SparkSession}
 import org.apache.spark.SparkConf
+import org.apache.log4j.Logger
 
-object SparkCassandraIntegrationApp extends App with Serializable {
+/**
+ * @author Ranga Reddy
+ * Version: 1.0
+ * Created : 07/14/2021
+ */
 
-  val appName = "SparkCassandraIntegrationApp Example"
+object SparkCassandraIntegrationApp extends Serializable {
 
-  // Creating the SparkConf object
-  val sparkConf = new SparkConf().setAppName(appName).setIfMissing("spark.master", "local[*]")
+    @transient lazy val logger: Logger = Logger.getLogger(getClass.getName)
 
-  // Creating the SparkSession object
-  val spark: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
-  println("SparkSession Created successfully")
+    def main(args: Array[String]): Unit = {
+        
+        if(args.length > 1 ) {
+            System.err.println("Usage : SparkCassandraIntegrationApp <CASSANDRA_HOST>");
+            System.exit(0);
+        }
 
-  val dataset = spark.range(1, 1000)
-  dataset.printSchema()
-  dataset.show()
+        val appName = "Spark Cassandra Integration"
+        
+        // Creating the SparkConf object
+        val sparkConf = new SparkConf().setAppName(appName).setIfMissing("spark.master", "local[2]")
 
-  // Close the SparkSession
-  spark.close()
-  println("SparkSession closed successfully")
+        val cassandraHost = args(0)
+        val cassandraPort = if(args.length > 1) args(1) else "9042"
+
+        sparkConf.set("spark.cassandra.connection.host", cassandraHost)
+        sparkConf.set("spark.cassandra.connection.port", cassandraPort)
+
+        // Creating the SparkSession object
+        val spark: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
+        println("SparkSession created successfully")
+
+        
+        val tableName = "employees"
+        val keyspace = "ranga_keyspace"
+        val cassandraFormat = "org.apache.spark.sql.cassandra"
+        val options = Map( "keyspace" -> keyspace, "table" -> tableName)
+
+        val employeeDF = spark.read.format(cassandraFormat).options(options).load()
+        display(employeeDF)
+        
+        employeeDF.printSchema()
+        employeeDF.show(truncate=false)  
+
+        import spark.implicits._
+        var employeeDS = Seq(
+          Employee(5L, "Yashwanth", 32, 80000.5f),
+          Employee(6L, "Vasundra Reddy", 57, 180000.5f)
+        ).toDS()
+
+        employeeDS.write.mode(SaveMode.Append).format(cassandraFormat).options(options).save()
+
+        val empDF = spark.read.format(cassandraFormat).options(options).load()
+        display(empDF)
+
+
+        logger.info("<Spark Cassandra Integration> successfully finished")
+
+        // Close the SparkSession
+        spark.close()
+        logger.info("SparkSession closed successfully")
+    }
+
+    
+    def display(dataFrame: DataFrame) = {
+      dataFrame.printSchema()
+      dataFrame.show(truncate=false)
+    }
 }

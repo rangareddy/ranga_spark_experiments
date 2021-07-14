@@ -1,4 +1,4 @@
-package com.ranga.spark.kudu
+package com.ranga.spark.cassandra
 
 /**
  * @author Ranga Reddy

@@ -1,6 +1,20 @@
-# spark-gcs-integration
+# Spark Gcs Integration
+
+<div>
+        <img src="https://github.com/rangareddy/ranga-logos/blob/main/frameworks/spark/spark_logo.png?raw=true" height="200" width="250"/>
+        <img src="https://github.com/rangareddy/ranga-logos/blob/main/others/plus_logo.png?raw=true" height="200" width="250"/>
+        <img src="https://github.com/rangareddy/ranga-logos/blob/main/cloud/gcp/gcs_logo.png?raw=true" height="200" width="250"/>
+</div>
+
 
 ## Prerequisites
+
+* Spark Version : 2.4.0.7.1.6.0-297
+* Gcs-connector Version : 2.1.2.7.1.6.0-297
+* Java Version : 1.8
+* Scala Version : 2.11.12
+
+
 
 ## Login to spark gateway node (for example mynode.host.com) and create the application deployment directory `/apps/spark/spark-gcs-integration`.
 ```sh
@@ -27,8 +41,12 @@ $ scp target/spark-gcs-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/
 $ scp run_spark_gcs_integration_app.sh username@mynode.host.com:/apps/spark/spark-gcs-integration
 ```
 
-## Login to spark gateway node (for example mynode.host.com) and run the application using `run_spark_gcs_integration_app.sh` script.
-**Note:** Before running the application, check you have application running permissions or not.
+## Login to spark gateway node (for example mynode.host.com) and run the application using `run_spark_gcs_integration_app.sh` shell script.
+
+**Note(s):**
+* Before running the application, check do you have proper permissions to run the application.
+* Check is there any parameters needs to pass in `run_spark_gcs_integration_app.sh` shell script.
+
 ```sh
 sh /apps/spark/spark-gcs-integration/run_spark_gcs_integration_app.sh
 ```
