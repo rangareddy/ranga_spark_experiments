@@ -27,15 +27,15 @@ val testScope = "test"
 
 resolvers ++= Seq(
     "scala-tools" at "https://oss.sonatype.org/content/groups/scala-tools",
-    "Maven2 repository" at "https://repo1.maven.org/maven2/",
+    "central" at "https://repo1.maven.org/maven2",
     "cloudera-repo" at "https://repository.cloudera.com/artifactory/cloudera-repos/"
 )
 
 // Spark + Other Dependencies
 lazy val appDependencies = Seq(
-	"org.apache.spark" % s"spark-core_${scalaBinaryVersion}" % sparkVersion % sparkScope,
-	"org.apache.spark" % s"spark-sql_${scalaBinaryVersion}" % sparkVersion % sparkScope,
-	"com.datastax.spark" % s"spark-cassandra-connector_${scalaBinaryVersion}" % spark_cassandra_connectorVersion % spark_cassandra_connectorScope
+    "org.apache.spark" % s"spark-core_${scalaBinaryVersion}" % sparkVersion % sparkScope,
+    "org.apache.spark" % s"spark-sql_${scalaBinaryVersion}" % sparkVersion % sparkScope,
+    "com.datastax.spark" % s"spark-cassandra-connector_${scalaBinaryVersion}" % spark_cassandra_connectorVersion % spark_cassandra_connectorScope
 )
 
 // Test Dependencies
