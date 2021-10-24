@@ -43,22 +43,22 @@
     <!-- Repositories -->
     <repositories>
         <repository>
-			<id>central</id>
-			<name>Maven Central</name>
-			<url>https://repo1.maven.org/maven2</url>
-		</repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2</url>
+        </repository>
 
-		<repository>
-			<id>cldr-repo</id>
-			<name>Cloudera Public Repo</name>
-			<url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
-		</repository>
+        <repository>
+            <id>cldr-repo</id>
+            <name>Cloudera Public Repo</name>
+            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+        </repository>
 
-		<repository>
-			<id>hdp-repo</id>
-			<name>Hortonworks Public Repo</name>
-			<url>https://repo.hortonworks.com/content/repositories/releases/</url>
-		</repository>
+        <repository>
+            <id>hdp-repo</id>
+            <name>Hortonworks Public Repo</name>
+            <url>https://repo.hortonworks.com/content/repositories/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
