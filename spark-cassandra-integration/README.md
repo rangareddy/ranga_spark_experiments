@@ -9,10 +9,12 @@
 
 ## Prerequisites
 
-* Spark Version : 2.4.0.7.1.6.0-297
-* Spark Cassandra Connector Version : 3.0.0
-* Java Version : 1.8
 * Scala Version : 2.11.12
+* Java Version : 1.8
+* Scala Test Version : 3.0.8
+* Junit Test Version : 4.13.1
+* Spark Version : 2.4.0.7.1.6.0-297
+* Spark Cassandra Connector Version : 2.5.2
 
 ## Cassandra schema
 

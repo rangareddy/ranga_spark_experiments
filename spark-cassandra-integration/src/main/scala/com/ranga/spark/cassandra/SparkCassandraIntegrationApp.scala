@@ -1,13 +1,13 @@
 package com.ranga.spark.cassandra
 
-import org.apache.spark.sql.{SQLContext, SparkSession}
+import org.apache.spark.sql.{Dataset, Row, SparkSession}
 import org.apache.spark.SparkConf
 import org.apache.log4j.Logger
 
 /**
  * @author Ranga Reddy
  * Version: 1.0
- * Created : 07/14/2021
+ * Created : 10/18/2021
  */
 
 object SparkCassandraIntegrationApp extends Serializable {
@@ -54,7 +54,7 @@ object SparkCassandraIntegrationApp extends Serializable {
           Employee(6L, "Vasundra Reddy", 57, 180000.5f)
         ).toDS()
 
-        employeeDS.write.mode(SaveMode.Append).format(cassandraFormat).options(options).save()
+        employeeDS.write.mode(org.apache.spark.sql.SaveMode.Append).format(cassandraFormat).options(options).save()
 
         val empDF = spark.read.format(cassandraFormat).options(options).load()
         display(empDF)
@@ -67,8 +67,8 @@ object SparkCassandraIntegrationApp extends Serializable {
     }
 
     
-    def display(dataFrame: DataFrame) = {
-      dataFrame.printSchema()
-      dataFrame.show(truncate=false)
+    def display(df: Dataset[Row]) = {
+      df.printSchema()
+      df.show(truncate=false)
     }
 }

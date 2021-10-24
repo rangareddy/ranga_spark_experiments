@@ -9,11 +9,13 @@
 
 ## Prerequisites
 
+* Scala Version : 2.11.12
+* Java Version : 1.8
+* Scala Test Version : 3.0.8
+* Junit Test Version : 4.13.1
 * Spark Version : 2.4.0.7.1.6.0-297
 * Aws Java Sdk Bundle Version : 1.11.375
 * Hadoop Aws Version : 3.1.1.7.1.6.0-297
-* Java Version : 1.8
-* Scala Version : 2.11.12
 
 
 

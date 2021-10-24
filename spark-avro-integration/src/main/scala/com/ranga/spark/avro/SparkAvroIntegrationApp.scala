@@ -7,7 +7,7 @@ import org.apache.log4j.Logger
 /**
  * @author Ranga Reddy
  * Version: 1.0
- * Created : 07/14/2021
+ * Created : 10/18/2021
  */
 
 object SparkAvroIntegrationApp extends Serializable {
@@ -21,7 +21,7 @@ object SparkAvroIntegrationApp extends Serializable {
         
         // Creating the SparkConf object
         val sparkConf = new SparkConf().setAppName(appName).setIfMissing("spark.master", "local[2]")
-    
+
         // Creating the SparkSession object
         val spark: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
         logger.info("SparkSession created successfully")

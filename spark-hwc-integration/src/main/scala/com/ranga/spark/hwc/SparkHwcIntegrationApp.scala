@@ -9,7 +9,7 @@ import com.hortonworks.spark.sql.hive.llap.HiveWarehouseSessionImpl
 /**
  * @author Ranga Reddy
  * Version: 1.0
- * Created : 07/14/2021
+ * Created : 10/18/2021
  */
 
 object SparkHwcIntegrationApp extends Serializable {
