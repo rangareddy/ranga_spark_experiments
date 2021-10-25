@@ -9,12 +9,13 @@
 
 ## Prerequisites
 
-* Scala Version : 2.11.12
-* Java Version : 1.8
-* Scala Test Version : 3.0.8
-* Junit Test Version : 4.13.1
-* Spark Version : 2.4.0.7.1.6.0-297
-* Spark Cassandra Connector Version : 2.5.2
+|Component|Version|
+|---------|-------|
+|Scala|2.11.12|
+|Java|1.8|
+|Spark|2.4.0.7.1.6.0-297|
+|Spark Cassandra Connector|2.5.2|
+
 
 ## Cassandra schema
 
@@ -71,13 +72,34 @@ $ cd ranga_spark_experiments/spark-cassandra-integration
 
 ## Build the `spark-cassandra-integration` application.
 **Note:** Before building the application, update spark & other components library versions according to your cluster version.
+
+### 1) Building the project using maven build tool
+
 ```sh
-$ mvn clean package -DskipTests
+$ mvn clean package
 ```
 
-## Copy the `spark-cassandra-integration-1.0.0-SNAPSHOT.jar` uber jar and run script `run_spark_cassandra_integration_app.sh` to spark gateway node `/apps/spark/spark-cassandra-integration` directory.
+### 2) Copy the `spark-cassandra-integration-1.0.0-SNAPSHOT.jar` uber jar to spark gateway node `/apps/spark/spark-cassandra-integration` directory.
+
 ```sh
 $ scp target/spark-cassandra-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-cassandra-integration
+```
+
+### 1) Building the project using sbt build tool
+
+```sh
+$ sbt clean package
+```
+
+### 2) Copy the `spark-cassandra-integration-1.0.0-SNAPSHOT.jar` uber jar to spark gateway node `/apps/spark/spark-cassandra-integration` directory.
+
+```sh
+$ scp target/2.11/spark-cassandra-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-cassandra-integration
+```
+
+## Copy the run script `run_spark_cassandra_integration_app.sh` to spark gateway node `/apps/spark/spark-cassandra-integration` directory.
+
+```sh
 $ scp run_spark_cassandra_integration_app.sh username@mynode.host.com:/apps/spark/spark-cassandra-integration
 ```
 

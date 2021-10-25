@@ -9,12 +9,13 @@
 
 ## Prerequisites
 
-* Scala Version : 2.11.12
-* Java Version : 1.8
-* Scala Test Version : 3.0.8
-* Junit Test Version : 4.13.1
-* Spark Version : 2.4.0.7.1.6.0-297
-* Hbase Spark Version : 1.0.0.7.1.6.0-297
+|Component|Version|
+|---------|-------|
+|Scala|2.11.12|
+|Java|1.8|
+|Spark|2.4.0.7.1.6.0-297|
+|Hbase Spark|1.0.0.7.1.6.0-297|
+
 
 ## Launch HBase Shell and create an Employee table
 
@@ -43,13 +44,34 @@ $ cd ranga_spark_experiments/spark-hbase-integration
 
 ## Build the `spark-hbase-integration` application.
 **Note:** Before building the application, update spark & other components library versions according to your cluster version.
+
+### 1) Building the project using maven build tool
+
 ```sh
-$ mvn clean package -DskipTests
+$ mvn clean package
 ```
 
-## Copy the `spark-hbase-integration-1.0.0-SNAPSHOT.jar` uber jar and run script `run_spark_hbase_integration_app.sh` to spark gateway node `/apps/spark/spark-hbase-integration` directory.
+### 2) Copy the `spark-hbase-integration-1.0.0-SNAPSHOT.jar` uber jar to spark gateway node `/apps/spark/spark-hbase-integration` directory.
+
 ```sh
 $ scp target/spark-hbase-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-hbase-integration
+```
+
+### 1) Building the project using sbt build tool
+
+```sh
+$ sbt clean package
+```
+
+### 2) Copy the `spark-hbase-integration-1.0.0-SNAPSHOT.jar` uber jar to spark gateway node `/apps/spark/spark-hbase-integration` directory.
+
+```sh
+$ scp target/2.11/spark-hbase-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-hbase-integration
+```
+
+## Copy the run script `run_spark_hbase_integration_app.sh` to spark gateway node `/apps/spark/spark-hbase-integration` directory.
+
+```sh
 $ scp run_spark_hbase_integration_app.sh username@mynode.host.com:/apps/spark/spark-hbase-integration
 ```
 
