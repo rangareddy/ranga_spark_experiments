@@ -20,7 +20,8 @@
 
 
 
-## Login to spark gateway node (for example mynode.host.com) and create the application deployment directory `/apps/spark/spark-s3-integration`.
+## Login to spark gateway node (for example mynode.host.com) and create the application deployment `/apps/spark/spark-s3-integration` directory.
+
 ```sh
 $ ssh username@mynode.host.com
 $ mkdir -p /apps/spark/spark-s3-integration
@@ -28,13 +29,13 @@ $ chmod 755 /apps/spark/spark-s3-integration
 ```
 
 ## Download the `spark-s3-integration` application.
+
 ```sh
 $ git clone https://github.com/rangareddy/ranga_spark_experiments.git
 $ cd ranga_spark_experiments/spark-s3-integration
 ```
 
 ## Build the `spark-s3-integration` application.
-**Note:** Before building the application, update spark & other components library versions according to your cluster version.
 
 ### 1) Building the project using maven build tool
 
@@ -48,17 +49,6 @@ $ mvn clean package
 $ scp target/spark-s3-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-s3-integration
 ```
 
-### 1) Building the project using sbt build tool
-
-```sh
-$ sbt clean package
-```
-
-### 2) Copy the `spark-s3-integration-1.0.0-SNAPSHOT.jar` uber jar to spark gateway node `/apps/spark/spark-s3-integration` directory.
-
-```sh
-$ scp target/2.11/spark-s3-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-s3-integration
-```
 
 ## Copy the run script `run_spark_s3_integration_app.sh` to spark gateway node `/apps/spark/spark-s3-integration` directory.
 

@@ -20,22 +20,26 @@
 ## Cassandra schema
 
 ### Launch `cqlsh` shell
+
 ```sh
 cqlsh
 ```
 
 ### Create a keyspace
+
 ```sql
 cqlsh> CREATE KEYSPACE IF NOT EXISTS ranga_keyspace WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1 };
 cqlsh> use ranga_keyspace;
 ```
 
 ### Create a table
+
 ```sql
 cqlsh:ranga_keyspace> CREATE TABLE IF NOT EXISTS ranga_keyspace.employees(id bigint PRIMARY KEY, name TEXT, age int, salary float);
 ```
 
 ### Insert the data
+
 ```sql
 cqlsh:ranga_keyspace> INSERT INTO ranga_keyspace.employees(id, name, age, salary) VALUES (1, 'Ranga Reddy', 33, 50000.00);
 cqlsh:ranga_keyspace> INSERT INTO ranga_keyspace.employees(id, name, age, salary) VALUES (2, 'Nishanth Reddy', 4, 80000.00);
@@ -44,6 +48,7 @@ cqlsh:ranga_keyspace> INSERT INTO ranga_keyspace.employees(id, name, age, salary
 ```
 
 ### Select the data
+
 ```sql
 cqlsh:ranga_keyspace> SELECT * FROM ranga_keyspace.employees;
 
@@ -57,7 +62,8 @@ cqlsh:ranga_keyspace> SELECT * FROM ranga_keyspace.employees;
 (4 rows)
 ```
 
-## Login to spark gateway node (for example mynode.host.com) and create the application deployment directory `/apps/spark/spark-cassandra-integration`.
+## Login to spark gateway node (for example mynode.host.com) and create the application deployment `/apps/spark/spark-cassandra-integration` directory.
+
 ```sh
 $ ssh username@mynode.host.com
 $ mkdir -p /apps/spark/spark-cassandra-integration
@@ -65,13 +71,13 @@ $ chmod 755 /apps/spark/spark-cassandra-integration
 ```
 
 ## Download the `spark-cassandra-integration` application.
+
 ```sh
 $ git clone https://github.com/rangareddy/ranga_spark_experiments.git
 $ cd ranga_spark_experiments/spark-cassandra-integration
 ```
 
 ## Build the `spark-cassandra-integration` application.
-**Note:** Before building the application, update spark & other components library versions according to your cluster version.
 
 ### 1) Building the project using maven build tool
 
@@ -85,17 +91,6 @@ $ mvn clean package
 $ scp target/spark-cassandra-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-cassandra-integration
 ```
 
-### 1) Building the project using sbt build tool
-
-```sh
-$ sbt clean package
-```
-
-### 2) Copy the `spark-cassandra-integration-1.0.0-SNAPSHOT.jar` uber jar to spark gateway node `/apps/spark/spark-cassandra-integration` directory.
-
-```sh
-$ scp target/2.11/spark-cassandra-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-cassandra-integration
-```
 
 ## Copy the run script `run_spark_cassandra_integration_app.sh` to spark gateway node `/apps/spark/spark-cassandra-integration` directory.
 

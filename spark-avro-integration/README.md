@@ -18,7 +18,8 @@
 
 
 
-## Login to spark gateway node (for example mynode.host.com) and create the application deployment directory `/apps/spark/spark-avro-integration`.
+## Login to spark gateway node (for example mynode.host.com) and create the application deployment `/apps/spark/spark-avro-integration` directory.
+
 ```sh
 $ ssh username@mynode.host.com
 $ mkdir -p /apps/spark/spark-avro-integration
@@ -26,13 +27,13 @@ $ chmod 755 /apps/spark/spark-avro-integration
 ```
 
 ## Download the `spark-avro-integration` application.
+
 ```sh
 $ git clone https://github.com/rangareddy/ranga_spark_experiments.git
 $ cd ranga_spark_experiments/spark-avro-integration
 ```
 
 ## Build the `spark-avro-integration` application.
-**Note:** Before building the application, update spark & other components library versions according to your cluster version.
 
 ### 1) Building the project using maven build tool
 
@@ -46,17 +47,6 @@ $ mvn clean package
 $ scp target/spark-avro-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-avro-integration
 ```
 
-### 1) Building the project using sbt build tool
-
-```sh
-$ sbt clean package
-```
-
-### 2) Copy the `spark-avro-integration-1.0.0-SNAPSHOT.jar` uber jar to spark gateway node `/apps/spark/spark-avro-integration` directory.
-
-```sh
-$ scp target/2.11/spark-avro-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-avro-integration
-```
 
 ## Copy the run script `run_spark_avro_integration_app.sh` to spark gateway node `/apps/spark/spark-avro-integration` directory.
 

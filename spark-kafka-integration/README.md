@@ -36,7 +36,8 @@ $KAFAK_HOME/bin/kafka-console-producer.sh --bootstrap-server <BOOTSTRAP_SERVER_H
 $KAFAK_HOME/bin/kafka-console-consumer.sh --bootstrap-server <BOOTSTRAP_SERVER_HOST>:<PORT> --topic <TOPIC_NAME> --from-beginning
 ```
 
-## Login to spark gateway node (for example mynode.host.com) and create the application deployment directory `/apps/spark/spark-kafka-integration`.
+## Login to spark gateway node (for example mynode.host.com) and create the application deployment `/apps/spark/spark-kafka-integration` directory.
+
 ```sh
 $ ssh username@mynode.host.com
 $ mkdir -p /apps/spark/spark-kafka-integration
@@ -44,13 +45,13 @@ $ chmod 755 /apps/spark/spark-kafka-integration
 ```
 
 ## Download the `spark-kafka-integration` application.
+
 ```sh
 $ git clone https://github.com/rangareddy/ranga_spark_experiments.git
 $ cd ranga_spark_experiments/spark-kafka-integration
 ```
 
 ## Build the `spark-kafka-integration` application.
-**Note:** Before building the application, update spark & other components library versions according to your cluster version.
 
 ### 1) Building the project using maven build tool
 
@@ -64,17 +65,6 @@ $ mvn clean package
 $ scp target/spark-kafka-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-kafka-integration
 ```
 
-### 1) Building the project using sbt build tool
-
-```sh
-$ sbt clean package
-```
-
-### 2) Copy the `spark-kafka-integration-1.0.0-SNAPSHOT.jar` uber jar to spark gateway node `/apps/spark/spark-kafka-integration` directory.
-
-```sh
-$ scp target/2.11/spark-kafka-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-kafka-integration
-```
 
 ## Copy the run script `run_spark_kafka_integration_app.sh` to spark gateway node `/apps/spark/spark-kafka-integration` directory.
 

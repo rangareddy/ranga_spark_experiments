@@ -107,7 +107,8 @@ ROW                                             COLUMN+CELL
 ```
 
 
-## Login to spark gateway node (for example mynode.host.com) and create the application deployment directory `/apps/spark/spark-phoenix-integration`.
+## Login to spark gateway node (for example mynode.host.com) and create the application deployment `/apps/spark/spark-phoenix-integration` directory.
+
 ```sh
 $ ssh username@mynode.host.com
 $ mkdir -p /apps/spark/spark-phoenix-integration
@@ -115,13 +116,13 @@ $ chmod 755 /apps/spark/spark-phoenix-integration
 ```
 
 ## Download the `spark-phoenix-integration` application.
+
 ```sh
 $ git clone https://github.com/rangareddy/ranga_spark_experiments.git
 $ cd ranga_spark_experiments/spark-phoenix-integration
 ```
 
 ## Build the `spark-phoenix-integration` application.
-**Note:** Before building the application, update spark & other components library versions according to your cluster version.
 
 ### 1) Building the project using maven build tool
 
@@ -135,17 +136,6 @@ $ mvn clean package
 $ scp target/spark-phoenix-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-phoenix-integration
 ```
 
-### 1) Building the project using sbt build tool
-
-```sh
-$ sbt clean package
-```
-
-### 2) Copy the `spark-phoenix-integration-1.0.0-SNAPSHOT.jar` uber jar to spark gateway node `/apps/spark/spark-phoenix-integration` directory.
-
-```sh
-$ scp target/2.11/spark-phoenix-integration-1.0.0-SNAPSHOT.jar username@mynode.host.com:/apps/spark/spark-phoenix-integration
-```
 
 ## Copy the run script `run_spark_phoenix_integration_app.sh` to spark gateway node `/apps/spark/spark-phoenix-integration` directory.
 
