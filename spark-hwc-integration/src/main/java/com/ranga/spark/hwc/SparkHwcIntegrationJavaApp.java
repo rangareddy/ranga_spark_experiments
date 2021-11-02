@@ -19,7 +19,6 @@ public class SparkHwcIntegrationJavaApp implements Serializable {
 
     public static void main(String[] args) {
 
-
         String appName = "Spark Hwc Integration";
         
         // Creating the SparkConf object

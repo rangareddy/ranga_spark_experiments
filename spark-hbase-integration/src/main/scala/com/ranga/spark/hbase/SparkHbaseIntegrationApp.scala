@@ -16,7 +16,6 @@ object SparkHbaseIntegrationApp extends Serializable {
 
     def main(args: Array[String]): Unit = {
         
-
         val appName = "Spark Hbase Integration"
         
         // Creating the SparkConf object

@@ -16,7 +16,6 @@ object SparkAvroIntegrationApp extends Serializable {
 
     def main(args: Array[String]): Unit = {
         
-
         val appName = "Spark Avro Integration"
         
         // Creating the SparkConf object
@@ -26,14 +25,16 @@ object SparkAvroIntegrationApp extends Serializable {
         val spark: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
         logger.info("SparkSession created successfully")
 
-        val employeeDF = getEmployeeDS(spark)
-        employeeDF.printSchema()
-
-        // avro
         val avroFilePath = "/tmp/avro_data"
-        saveData(employeeDF, "avro", avroFilePath)
 
-        val avroEmployeeDF = loadData(spark, "avro", avroFilePath)
+        val employeeDF = getEmployeeDS(spark)
+        display(employeeDF)
+
+        // write avro data
+        df.coalesce(1).write.format("avro").mode("overwrite").save(avroFilePath)
+
+       // read avro data
+        val avroEmployeeDF = spark.read.format("avro").load(avroFilePath)
         display(avroEmployeeDF)
 
         logger.info("<Spark Avro Integration> successfully finished")
@@ -43,6 +44,7 @@ object SparkAvroIntegrationApp extends Serializable {
         logger.info("SparkSession closed successfully")
     }
 
+    // Get the Employee Dataset
     def getEmployeeDS(spark: SparkSession): Dataset[Row] = {
         import spark.implicits._
         Seq(
@@ -53,16 +55,10 @@ object SparkAvroIntegrationApp extends Serializable {
             Employee(5L, "Vasundra Reddy", 55, 580000.5f)
         ).toDF()
     }
-
-    def saveData(df: Dataset[Row], format:String, path: String): Unit = {
-        df.coalesce(1).write.format(format).mode("overwrite").save(path)
-    }
+    // Display the Dataset
     def display(df: Dataset[Row]): Unit = {
         df.printSchema()
         df.show()
     }
 
-    def loadData(spark: SparkSession, format:String, path: String) : Dataset[Row] = {
-        spark.read.format(format).load(path)
-    }
 }

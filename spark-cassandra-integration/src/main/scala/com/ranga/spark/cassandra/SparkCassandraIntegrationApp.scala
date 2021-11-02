@@ -36,7 +36,6 @@ object SparkCassandraIntegrationApp extends Serializable {
         val spark: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
         println("SparkSession created successfully")
 
-        
         val tableName = "employees"
         val keyspace = "ranga_keyspace"
         val cassandraFormat = "org.apache.spark.sql.cassandra"
@@ -44,9 +43,6 @@ object SparkCassandraIntegrationApp extends Serializable {
 
         val employeeDF = spark.read.format(cassandraFormat).options(options).load()
         display(employeeDF)
-        
-        employeeDF.printSchema()
-        employeeDF.show(truncate=false)  
 
         import spark.implicits._
         var employeeDS = Seq(

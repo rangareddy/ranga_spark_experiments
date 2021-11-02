@@ -1,12 +1,11 @@
 #!/bin/bash
 
-echo ""
-echo "Running the <$0> script"
-echo ""
+SCRIPT_NAME=`basename "$0"`
+
+printf "\nRunning the <${SCRIPT_NAME}> script.\n"
 
 if [ $# -lt 3 ]; then
-    echo "Usage   : $0 <CASSANDRA_HOST> <PRINCIPAL> <KEYTAB>"
-    echo " "
+    printf "Usage  : ${SCRIPT_NAME} <CASSANDRA_HOST> <PRINCIPAL> <KEYTAB>\n"
     exit 1
 fi
 
@@ -28,4 +27,4 @@ spark-submit \
  	--class com.ranga.spark.cassandra.SparkCassandraIntegrationApp \
 	/apps/spark/spark-cassandra-integration/spark-cassandra-integration-1.0.0-SNAPSHOT.jar ${CASSANDRA_HOST}
 
-echo "Finished <$0> script"
+printf "Finished <${SCRIPT_NAME}> script.\n"

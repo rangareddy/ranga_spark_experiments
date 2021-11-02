@@ -1,12 +1,11 @@
 #!/bin/bash
 
-echo ""
-echo "Running the <$0> script"
-echo ""
+SCRIPT_NAME=`basename "$0"`
+
+printf "\nRunning the <${SCRIPT_NAME}> script.\n"
 
 if [ $# -lt 5 ]; then
-    echo "Usage   : $0 <HIVE_SERVER2_JDBC_URL> <HIVE_METASTORE_URI> <HIVE_SERVER2_AUTH_KERBEROS_PRINCIPAL> <PRINCIPAL> <KEYTAB>"
-    echo " "
+    printf "Usage  : ${SCRIPT_NAME} <HIVE_SERVER2_JDBC_URL> <HIVE_METASTORE_URI> <HIVE_SERVER2_AUTH_KERBEROS_PRINCIPAL> <PRINCIPAL> <KEYTAB>\n"
     exit 1
 fi
 
@@ -41,4 +40,4 @@ spark-submit \
  	--class com.ranga.spark.hwc.SparkHwcIntegrationApp \
 	/apps/spark/spark-hwc-integration/spark-hwc-integration-1.0.0-SNAPSHOT.jar
 
-echo "Finished <$0> script"
+printf "Finished <${SCRIPT_NAME}> script.\n"

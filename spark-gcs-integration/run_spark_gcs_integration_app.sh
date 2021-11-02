@@ -1,12 +1,11 @@
 #!/bin/bash
 
-echo ""
-echo "Running the <$0> script"
-echo ""
+SCRIPT_NAME=`basename "$0"`
+
+printf "\nRunning the <${SCRIPT_NAME}> script.\n"
 
 if [ $# -lt 7 ]; then
-    echo "Usage   : $0 <PROJECT_ID> <BUCKET_NAME> <PRIVATE_KEY> <PRIVATE_KEY_ID> <CLIENT_EMAIL> <PRINCIPAL> <KEYTAB>"
-    echo " "
+    printf "Usage  : ${SCRIPT_NAME} <PROJECT_ID> <BUCKET_NAME> <PRIVATE_KEY> <PRIVATE_KEY_ID> <CLIENT_EMAIL> <PRINCIPAL> <KEYTAB>\n"
     exit 1
 fi
 
@@ -32,4 +31,4 @@ spark-submit \
  	--class com.ranga.spark.gcs.SparkGcsIntegrationApp \
 	/apps/spark/spark-gcs-integration/spark-gcs-integration-1.0.0-SNAPSHOT.jar ${PROJECT_ID},${BUCKET_NAME},${PRIVATE_KEY},${PRIVATE_KEY_ID},${CLIENT_EMAIL}
 
-echo "Finished <$0> script"
+printf "Finished <${SCRIPT_NAME}> script.\n"

@@ -18,7 +18,6 @@ public class SparkAvroIntegrationJavaApp implements Serializable {
 
     public static void main(String[] args) {
 
-
         String appName = "Spark Avro Integration";
         
         // Creating the SparkConf object
@@ -28,18 +27,18 @@ public class SparkAvroIntegrationJavaApp implements Serializable {
         SparkSession spark = SparkSession.builder().config(sparkConf).getOrCreate();
         logger.info("SparkSession created successfully");
 
-        // Creating a dataset
-        Dataset<EmployeeBean> employeeDF = getEmployeeDS(spark);
-        employeeDF.printSchema();
-        employeeDF.show(false);
-
-        // avro
         String avroFilePath = "/tmp/avro_data";
-        saveData(employeeDF, "avro", avroFilePath);
 
-        Dataset<Row> avroEmployeeDF = loadData(spark, "avro", avroFilePath);
+        // Get the Employee Dataset
+        Dataset<EmployeeBean> employeeDF = getEmployeeDS(spark);
+        display(employeeDF);
+
+        // write avro data
+        employeeDF.coalesce(1).write().format("avro").mode("overwrite").save(avroFilePath);
+
+        // read avro data
+        Dataset<Row> avroEmployeeDF = spark.read().format("avro").load(avroFilePath);
         display(avroEmployeeDF);
-
 
         logger.info("<Spark Avro Integration> successfully finished");
 
@@ -48,6 +47,7 @@ public class SparkAvroIntegrationJavaApp implements Serializable {
         logger.info("SparkSession closed successfully");
     }
 
+    // Get the Employee Dataset
     public static Dataset<EmployeeBean> getEmployeeDS(SparkSession spark) {
         List<EmployeeBean> employeeData = new ArrayList<>();
         employeeData.add(new EmployeeBean(1l, "Ranga Reddy", 32, 80000.5f));
@@ -58,17 +58,10 @@ public class SparkAvroIntegrationJavaApp implements Serializable {
         return spark.createDataset(employeeData, Encoders.bean(EmployeeBean.class));
     }
 
+    // Display the Dataset
     public static void display(Dataset<Row> dataset) {
         dataset.printSchema();
         dataset.show(false);
     }
 
-    public static Dataset<Row> loadData(SparkSession spark, String format, String path) {
-        Dataset<Row> employeeDF = spark.read().format(format).load(path);
-        return employeeDF;
-    }
-
-    public static void saveData(Dataset<EmployeeBean> employeeDF, String format, String path) {
-        employeeDF.coalesce(1).write().format(format).mode("overwrite").save(path);
-    }
 }

@@ -18,7 +18,6 @@ object SparkHwcIntegrationApp extends Serializable {
 
     def main(args: Array[String]): Unit = {
         
-
         val appName = "Spark Hwc Integration"
         
         // Creating the SparkConf object

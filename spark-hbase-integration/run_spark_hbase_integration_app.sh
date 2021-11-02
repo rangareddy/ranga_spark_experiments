@@ -1,12 +1,11 @@
 #!/bin/bash
 
-echo ""
-echo "Running the <$0> script"
-echo ""
+SCRIPT_NAME=`basename "$0"`
+
+printf "\nRunning the <${SCRIPT_NAME}> script.\n"
 
 if [ $# -lt 2 ]; then
-    echo "Usage   : $0 <PRINCIPAL> <KEYTAB>"
-    echo " "
+    printf "Usage  : ${SCRIPT_NAME} <PRINCIPAL> <KEYTAB>\n"
     exit 1
 fi
 
@@ -27,4 +26,4 @@ spark-submit \
  	--class com.ranga.spark.hbase.SparkHbaseIntegrationApp \
 	/apps/spark/spark-hbase-integration/spark-hbase-integration-1.0.0-SNAPSHOT.jar
 
-echo "Finished <$0> script"
+printf "Finished <${SCRIPT_NAME}> script.\n"

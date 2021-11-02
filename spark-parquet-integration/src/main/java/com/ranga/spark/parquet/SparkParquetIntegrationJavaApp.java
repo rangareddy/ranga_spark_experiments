@@ -18,7 +18,6 @@ public class SparkParquetIntegrationJavaApp implements Serializable {
 
     public static void main(String[] args) {
 
-
         String appName = "Spark Parquet Integration";
         
         // Creating the SparkConf object

@@ -1,12 +1,11 @@
 #!/bin/bash
 
-echo ""
-echo "Running the <$0> script"
-echo ""
+SCRIPT_NAME=`basename "$0"`
+
+printf "\nRunning the <${SCRIPT_NAME}> script.\n"
 
 if [ $# -lt 5 ]; then
-    echo "Usage   : $0 <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY> <BUCKET_NAME> <PRINCIPAL> <KEYTAB>"
-    echo " "
+    printf "Usage  : ${SCRIPT_NAME} <AWS_ACCESS_KEY_ID> <AWS_SECRET_ACCESS_KEY> <BUCKET_NAME> <PRINCIPAL> <KEYTAB>\n"
     exit 1
 fi
 
@@ -30,4 +29,4 @@ spark-submit \
  	--class com.ranga.spark.s3.SparkS3IntegrationApp \
 	/apps/spark/spark-s3-integration/spark-s3-integration-1.0.0-SNAPSHOT.jar ${AWS_ACCESS_KEY_ID},${AWS_SECRET_ACCESS_KEY},${BUCKET_NAME}
 
-echo "Finished <$0> script"
+printf "Finished <${SCRIPT_NAME}> script.\n"

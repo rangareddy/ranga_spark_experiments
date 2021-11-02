@@ -16,7 +16,6 @@ object SparkHiveIntegrationApp extends Serializable {
 
     def main(args: Array[String]): Unit = {
         
-
         val appName = "Spark Hive Integration"
         
         // Creating the SparkConf object

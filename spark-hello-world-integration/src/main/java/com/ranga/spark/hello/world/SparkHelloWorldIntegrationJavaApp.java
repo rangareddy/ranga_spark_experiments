@@ -18,7 +18,6 @@ public class SparkHelloWorldIntegrationJavaApp implements Serializable {
 
     public static void main(String[] args) {
 
-
         String appName = "Spark Hello World Integration";
         
         // Creating the SparkConf object

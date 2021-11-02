@@ -1,12 +1,11 @@
 #!/bin/bash
 
-echo ""
-echo "Running the <$0> script"
-echo ""
+SCRIPT_NAME=`basename "$0"`
+
+printf "\nRunning the <${SCRIPT_NAME}> script.\n"
 
 if [ $# -lt 4 ]; then
-    echo "Usage   : $0 <PHOENIX_SERVER_URL> <TABLE_NAME> <PRINCIPAL> <KEYTAB>"
-    echo " "
+    printf "Usage  : ${SCRIPT_NAME} <PHOENIX_SERVER_URL> <TABLE_NAME> <PRINCIPAL> <KEYTAB>\n"
     exit 1
 fi
 
@@ -29,4 +28,4 @@ spark-submit \
  	--class com.ranga.spark.phoenix.SparkPhoenixIntegrationApp \
 	/apps/spark/spark-phoenix-integration/spark-phoenix-integration-1.0.0-SNAPSHOT.jar ${PHOENIX_SERVER_URL},${TABLE_NAME}
 
-echo "Finished <$0> script"
+printf "Finished <${SCRIPT_NAME}> script.\n"

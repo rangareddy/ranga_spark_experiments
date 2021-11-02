@@ -18,7 +18,6 @@ public class SparkOrcIntegrationJavaApp implements Serializable {
 
     public static void main(String[] args) {
 
-
         String appName = "Spark Orc Integration";
         
         // Creating the SparkConf object

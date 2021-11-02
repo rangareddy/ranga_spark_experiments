@@ -1,12 +1,11 @@
 #!/bin/bash
 
-echo ""
-echo "Running the <$0> script"
-echo ""
+SCRIPT_NAME=`basename "$0"`
+
+printf "\nRunning the <${SCRIPT_NAME}> script.\n"
 
 if [ $# -lt 3 ]; then
-    echo "Usage   : $0 <KUDU_MASTER> <PRINCIPAL> <KEYTAB>"
-    echo " "
+    printf "Usage  : ${SCRIPT_NAME} <KUDU_MASTER> <PRINCIPAL> <KEYTAB>\n"
     exit 1
 fi
 
@@ -28,4 +27,4 @@ spark-submit \
  	--class com.ranga.spark.kudu.SparkKuduIntegrationApp \
 	/apps/spark/spark-kudu-integration/spark-kudu-integration-1.0.0-SNAPSHOT.jar ${KUDU_MASTER}
 
-echo "Finished <$0> script"
+printf "Finished <${SCRIPT_NAME}> script.\n"

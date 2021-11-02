@@ -1,12 +1,11 @@
 #!/bin/bash
 
-echo ""
-echo "Running the <$0> script"
-echo ""
+SCRIPT_NAME=`basename "$0"`
+
+printf "\nRunning the <${SCRIPT_NAME}> script.\n"
 
 if [ $# -lt 6 ]; then
-    echo "Usage   : $0 <KAFKA_BOOTSTRAP_SERVERS> <KAFKA_TOPIC_NAMES> <SSL_TRUSTSTORE_LOCATION> <SSL_TRUSTSTORE_PASSWORD> <PRINCIPAL> <KEYTAB>"
-    echo " "
+    printf "Usage  : ${SCRIPT_NAME} <KAFKA_BOOTSTRAP_SERVERS> <KAFKA_TOPIC_NAMES> <SSL_TRUSTSTORE_LOCATION> <SSL_TRUSTSTORE_PASSWORD> <PRINCIPAL> <KEYTAB>\n"
     exit 1
 fi
 
@@ -34,4 +33,4 @@ spark-submit \
 	--class com.ranga.spark.kafka.SparkKafkaIntegrationApp \
 	/apps/spark/spark-kafka-integration/spark-kafka-integration-1.0.0-SNAPSHOT.jar ${KAFKA_BOOTSTRAP_SERVERS},${KAFKA_TOPIC_NAMES},${SSL_TRUSTSTORE_LOCATION},${SSL_TRUSTSTORE_PASSWORD}
 
-echo "Finished <$0> script"
+printf "Finished <${SCRIPT_NAME}> script.\n"

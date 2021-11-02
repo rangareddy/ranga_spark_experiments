@@ -16,7 +16,6 @@ object SparkHelloWorldIntegrationApp extends Serializable {
 
     def main(args: Array[String]): Unit = {
         
-
         val appName = "Spark Hello World Integration"
         
         // Creating the SparkConf object

@@ -16,7 +16,6 @@ object SparkParquetIntegrationApp extends Serializable {
 
     def main(args: Array[String]): Unit = {
         
-
         val appName = "Spark Parquet Integration"
         
         // Creating the SparkConf object
