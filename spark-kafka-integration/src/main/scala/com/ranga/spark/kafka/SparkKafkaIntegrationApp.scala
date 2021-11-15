@@ -16,8 +16,8 @@ object SparkKafkaIntegrationApp extends Serializable {
 
     def main(args: Array[String]): Unit = {
         
-        if(args.length > 4 ) {
-            System.err.println("Usage : SparkKafkaIntegrationApp <KAFKA_BOOTSTRAP_SERVERS> <KAFKA_TOPIC_NAMES> <SSL_TRUSTSTORE_LOCATION> <SSL_TRUSTSTORE_PASSWORD>");
+        if(args.length > 2 ) {
+            System.err.println("Usage : SparkKafkaIntegrationApp <KAFKA_BOOTSTRAP_SERVERS> <KAFKA_TOPIC_NAMES>");
             System.exit(0);
         }
 
@@ -32,8 +32,6 @@ object SparkKafkaIntegrationApp extends Serializable {
 
         val kafkaBootstrapServers = args(0)
         val inputTopicNames = args(1)
-        val sslTruststoreLocation = args(2)
-        val sslTruststorePassword = args(3)
 
         val inputDf = spark.
             readStream.
@@ -41,9 +39,6 @@ object SparkKafkaIntegrationApp extends Serializable {
             option("kafka.bootstrap.servers", kafkaBootstrapServers).
             option("subscribe", inputTopicNames).
             option("startingOffsets", "earliest"). 
-            option("kafka.security.protocol","SASL_SSL"). 
-            option("kafka.ssl.truststore.location", sslTruststoreLocation).
-            option("kafka.ssl.truststore.password", sslTruststorePassword).
             load()
         
         inputDf.printSchema()

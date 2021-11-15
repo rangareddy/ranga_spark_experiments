@@ -62,7 +62,6 @@ $ scp run_spark_hwc_integration_app.sh username@mynode.host.com:/apps/spark/spar
 * Check is there any parameters needs to pass in `run_spark_hwc_integration_app.sh` shell script.
 * Update `hiveserver2_host` in `spark.sql.hive.hiveserver2.jdbc.url`
 * Update `metastore_uri` in `spark.hadoop.hive.metastore.uris`
-* Update `hive.server2.authentication.kerberos.principal` in `spark.sql.hive.hiveserver2.jdbc.url.principal`
 
 ```sh
 sh /apps/spark/spark-hwc-integration/run_spark_hwc_integration_app.sh

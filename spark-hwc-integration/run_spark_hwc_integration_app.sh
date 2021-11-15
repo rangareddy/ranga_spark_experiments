@@ -4,16 +4,13 @@ SCRIPT_NAME=`basename "$0"`
 
 printf "\nRunning the <${SCRIPT_NAME}> script.\n"
 
-if [ $# -lt 5 ]; then
-    printf "Usage  : ${SCRIPT_NAME} <HIVE_SERVER2_JDBC_URL> <HIVE_METASTORE_URI> <HIVE_SERVER2_AUTH_KERBEROS_PRINCIPAL> <PRINCIPAL> <KEYTAB>\n"
+if [ $# -lt 2 ]; then
+    printf "Usage  : ${SCRIPT_NAME} <HIVE_SERVER2_JDBC_URL> <HIVE_METASTORE_URI>\n"
     exit 1
 fi
 
 HIVE_SERVER2_JDBC_URL=$1
 HIVE_METASTORE_URI=$2
-HIVE_SERVER2_AUTH_KERBEROS_PRINCIPAL=$3
-PRINCIPAL=$4
-KEYTAB=$5
 
 spark-submit \
 	--conf spark.app.name=SparkHwcIntegration \
@@ -34,9 +31,8 @@ spark-submit \
 	--conf spark.sql.hive.hiveserver2.jdbc.url=${HIVE_SERVER2_JDBC_URL} \
 	--conf spark.hadoop.hive.metastore.uris=thrift://${HIVE_METASTORE_URI}:9083 \
 	--conf spark.security.credentials.hiveserver2.enabled=false \
-	--conf spark.sql.hive.hiveserver2.jdbc.url.principal=${HIVE_SERVER2_AUTH_KERBEROS_PRINCIPAL} \
-	--principal ${PRINCIPAL} \
-	--keytab ${KEYTAB} \
+	--conf spark.datasource.hive.warehouse.user.name=hive \
+	--conf spark.datasource.hive.warehouse.password=hive \
  	--class com.ranga.spark.hwc.SparkHwcIntegrationApp \
 	/apps/spark/spark-hwc-integration/spark-hwc-integration-1.0.0-SNAPSHOT.jar
 
