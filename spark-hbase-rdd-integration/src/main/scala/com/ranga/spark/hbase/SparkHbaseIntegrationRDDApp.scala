@@ -5,7 +5,6 @@ import org.apache.hadoop.hbase.client.{Result, Scan}
 import org.apache.hadoop.hbase.mapreduce.TableInputFormat
 import org.apache.hadoop.hbase.shaded.protobuf.ProtobufUtil
 import org.apache.hadoop.hbase.util.Bytes
-import org.apache.hadoop.security.UserGroupInformation
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
@@ -19,7 +18,7 @@ import java.util.Base64
  * Created : 12/29/2022
  */
 
-object SparkHbaseIntegrationSecureApp extends Serializable {
+object SparkHbaseIntegrationRDDApp extends Serializable {
 
     @transient private lazy val logger: Logger = Logger.getLogger(getClass.getName)
 
@@ -39,22 +38,6 @@ object SparkHbaseIntegrationSecureApp extends Serializable {
         // Configure HBase for reading
         val conf = HBaseConfiguration.create()
         conf.set(TableInputFormat.INPUT_TABLE, tableName)
-
-        //conf.set("hbase.zookeeper.quorum", "c3543-node3.coelab.cloudera.com")
-        //conf.set("hbase.zookeeper.property.clientPort", "2181")
-        //conf.set("zookeeper.znode.parent", "/hbase")
-
-        conf.set("hadoop.security.authentication", "kerberos")
-        conf.set("hbase.security.authentication", "kerberos")
-
-        System.setProperty("java.security.krb5.conf", "/etc/krb5.conf")
-        System.setProperty("sun.security.krb5.debug", "true")
-
-        val principal = "hbaseuser@EXAMPLE.COM"
-        val keytabLocation = "/home/user/hbase-client.keytab"
-
-        UserGroupInformation.setConfiguration(conf)
-        UserGroupInformation.loginUserFromKeytab(principal, keytabLocation)
 
         val scan = new Scan
         val columnFamily = Bytes.toBytes("e")
