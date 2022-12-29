@@ -44,7 +44,7 @@ object SparkHbaseIntegrationRDDApp extends Serializable {
         scan.addFamily(columnFamily)
 
         val scanString = convertScanToString(scan)
-        conf.set(org.apache.hadoop.hbase.mapreduce.TableInputFormat.SCAN, scanString);
+        conf.set(org.apache.hadoop.hbase.mapreduce.TableInputFormat.SCAN, scanString)
 
         // Load an RDD of (row key, row Result) tuples from the table
         val hBaseRDD = spark.sparkContext.newAPIHadoopRDD(conf, classOf[TableInputFormat],
@@ -74,7 +74,7 @@ object SparkHbaseIntegrationRDDApp extends Serializable {
     }
 
     @throws[IOException]
-    def convertScanToString(scan: Scan): String = {
+    private def convertScanToString(scan: Scan): String = {
         val protobufUtil = ProtobufUtil.toScan(scan)
         Base64.getEncoder.encodeToString(protobufUtil.toByteArray)
     }
