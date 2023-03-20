@@ -1,0 +1,61 @@
+package com.ranga.spark.streaming.graceful.shutdown.http
+
+import org.apache.log4j.Logger
+import org.apache.spark.SparkConf
+import org.apache.spark.streaming._
+
+// nc -lk 9999
+object SparkStreamingGracefulShutdownHttpApp extends App with Serializable {
+
+  private val appName = getClass.getSimpleName.replace("$", "") // App Name
+  @transient private lazy val logger: Logger = Logger.getLogger(appName)
+  private val checkpointDirectory = s"/tmp/streaming/$appName/checkpoint" // Checkpoint Directory
+  private val batchInterval: Long = 30 * 1000 // 30 seconds batch interval
+
+  if (args.length < 3) {
+    logger.error(s"Usage\t: $appName <hostname> <port> <jetty_port>")
+    logger.info(s"Example\t: $appName localhost 9999 3443")
+    System.exit(1)
+  }
+
+  private def createContext(hostname: String, port: Int): StreamingContext = {
+
+    // Creating the SparkConf object
+    val sparkConf = new SparkConf().setAppName(appName).setIfMissing("spark.master", "local[2]")
+
+    // Creating the StreamingContext object
+    logger.info(s"Creating StreamingContext with duration $batchInterval milli seconds ...")
+    val ssc = new StreamingContext(sparkConf, Milliseconds(batchInterval))
+    ssc.checkpoint(checkpointDirectory) // set checkpoint directory
+    logger.info("StreamingContext created successfully ...")
+
+    // Create a socket stream on target hostname:port
+    val lines = ssc.socketTextStream(hostname, port)
+
+    // Split each line into words
+    val words = lines.flatMap(_.split(" "))
+
+    // Count each word in each batch
+    val pairs = words.map(word => (word, 1))
+    val wordCounts = pairs.reduceByKey(_ + _)
+
+    // Print the first ten elements of each RDD generated in this DStream to the console
+    wordCounts.print()
+    ssc
+  }
+
+  // Get StreamingContext from checkpoint data or create a new one
+  private val Array(hostname, port, jettyPort) = args
+  logger.info(s"Hostname $hostname and Port $port ...")
+
+  private val ssc = StreamingContext.getOrCreate(checkpointDirectory, () => createContext(hostname, port.toInt))
+  ssc.start()
+  logger.info("StreamingContext Started ...")
+
+  // Start the http process that accepts the stop request:
+  // http://ApplicationMaster_Hostname:jettyPort/shutdown/SparkStreamingGracefulShutdownHttpApp
+  StopByHttpHandler.httpServer(jettyPort.toInt, ssc, appName)
+
+  // Wait for the task to terminate
+  ssc.awaitTermination()
+}

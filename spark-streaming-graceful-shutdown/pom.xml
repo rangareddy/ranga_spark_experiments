@@ -171,7 +171,7 @@
                                 <!-- Add Main Class to manifest file -->
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.ranga.spark.streaming.graceful.shutdown.SparkStreamingGracefulShutdownApp</mainClass>
+                                    <mainClass>com.ranga.spark.streaming.graceful.shutdown.marker.SparkStreamingGracefulShutdownMarkerApp</mainClass>
                                 </transformer>
                             </transformers>
 
