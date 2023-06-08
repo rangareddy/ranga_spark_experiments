@@ -15,7 +15,7 @@ spark-submit \
   --conf spark.streaming.receiver.writeAheadLog.enable=false \
   --conf spark.dynamicAllocation.enabled=false \
   --name SparkStreamingGracefulShutdownApp \
-  --class com.ranga.spark.streaming.graceful.shutdown.SparkStreamingGracefulShutdownApp \
+  --class com.ranga.spark.streaming.shutdown.socket.marker.SparkStreamingGracefulShutdownMarkerApp \
   /apps/spark/spark-streaming-graceful-shutdown/spark-streaming-graceful-shutdown-1.0.0-SNAPSHOT.jar "$HOST_NAME" "$PORT"
 
 echo "Finished <$0> script"

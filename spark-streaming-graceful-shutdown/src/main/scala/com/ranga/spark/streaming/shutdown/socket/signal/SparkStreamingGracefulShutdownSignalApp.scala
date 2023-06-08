@@ -1,4 +1,4 @@
-package com.ranga.spark.streaming.graceful.shutdown.signal
+package com.ranga.spark.streaming.shutdown.socket.signal
 
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
@@ -8,6 +8,7 @@ import org.apache.spark.streaming._
 object SparkStreamingGracefulShutdownSignalApp extends App with Serializable {
 
   private val appName = getClass.getSimpleName.replace("$", "") // App Name
+  // Create a logger instance for logging messages
   @transient private lazy val logger: Logger = Logger.getLogger(appName)
 
   private val checkpointDirectory = s"/tmp/streaming/$appName/checkpoint" // Checkpoint Directory
@@ -19,6 +20,13 @@ object SparkStreamingGracefulShutdownSignalApp extends App with Serializable {
     System.exit(1)
   }
 
+  /**
+   * Creates the StreamingContext with the given hostname and port.
+   *
+   * @param hostname The hostname of the socket stream
+   * @param port     The port of the socket stream
+   * @return The created StreamingContext
+   */
   private def createContext(hostname: String, port: Int): StreamingContext = {
 
     // Creating the SparkConf object
@@ -29,7 +37,7 @@ object SparkStreamingGracefulShutdownSignalApp extends App with Serializable {
     //sparkConf.set("spark.streaming.gracefulStopTimeout", (10 * batchInterval).toString)
 
     // Creating the StreamingContext object
-    logger.info(s"Creating StreamingContext with duration $batchInterval milli seconds ...")
+    logger.info(s"Creating StreamingContext with duration $batchInterval milliseconds ...")
     val ssc = new StreamingContext(sparkConf, Milliseconds(batchInterval))
     ssc.checkpoint(checkpointDirectory) // set checkpoint directory
     logger.info("StreamingContext created successfully ...")
@@ -56,5 +64,8 @@ object SparkStreamingGracefulShutdownSignalApp extends App with Serializable {
   private val ssc = StreamingContext.getOrCreate(checkpointDirectory, () => createContext(hostname, port.toInt))
   ssc.start()
   logger.info("StreamingContext Started ...")
+
+  //Waiting for task termination
   ssc.awaitTermination()
+
 }

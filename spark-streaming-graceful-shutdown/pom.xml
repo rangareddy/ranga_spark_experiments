@@ -24,6 +24,11 @@
         <spark.version>2.4.7.7.1.7.1000-141</spark.version>
         <spark.scope>provided</spark.scope>
 
+        <kafka.version>2.5.0.7.1.7.1000-141</kafka.version>
+        <kafka.scope>provided</kafka.scope>
+
+        <scalatest-maven-plugin.version>2.0.0</scalatest-maven-plugin.version>
+
         <scalatest.version>3.0.8</scalatest.version>
         <junit.version>4.13.1</junit.version>
     </properties>
@@ -74,6 +79,21 @@
             <artifactId>spark-streaming_${scala.binary.version}</artifactId>
             <version>${spark.version}</version>
             <scope>${spark.scope}</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-kafka-0-10_${scala.binary.version}</artifactId>
+            <version>${spark.version}</version>
+            <scope>${spark.scope}</scope>
+        </dependency>
+
+        <!-- Kafka Client -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka.version}</version>
+            <scope>${kafka.scope}</scope>
         </dependency>
 
         <!-- Scala Test dependencies -->
@@ -171,7 +191,7 @@
                                 <!-- Add Main Class to manifest file -->
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.ranga.spark.streaming.graceful.shutdown.marker.SparkStreamingGracefulShutdownMarkerApp</mainClass>
+                                    <mainClass>com.ranga.spark.streaming.shutdown.socket.marker.SparkStreamingGracefulShutdownMarkerApp</mainClass>
                                 </transformer>
                             </transformers>
 
@@ -193,7 +213,7 @@
             <plugin>
                 <groupId>org.scalatest</groupId>
                 <artifactId>scalatest-maven-plugin</artifactId>
-                <version>2.0.0</version>
+                <version>${scalatest-maven-plugin.version}</version>
                 <configuration>
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                     <junitxml>.</junitxml>

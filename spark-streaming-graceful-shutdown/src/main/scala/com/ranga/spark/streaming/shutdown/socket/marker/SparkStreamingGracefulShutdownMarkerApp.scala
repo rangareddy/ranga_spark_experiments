@@ -1,15 +1,18 @@
-package com.ranga.spark.streaming.graceful.shutdown.hook
+package com.ranga.spark.streaming.shutdown.socket.marker
 
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming._
+import com.ranga.spark.streaming.shutdown.util.marker.StopByMarkerFileSystem
 
 // nc -lk 9999
-object SparkStreamingGracefulShutdownHookApp extends App with Serializable {
+object SparkStreamingGracefulShutdownMarkerApp extends App with Serializable {
 
   private val appName = getClass.getSimpleName.replace("$", "") // App Name
+  // Create a logger instance for logging messages
   @transient private lazy val logger: Logger = Logger.getLogger(appName)
 
+  private val markerFile = "/tmp/streaming/graceful_shutdown/marker_file" // Marker File
   private val checkpointDirectory = s"/tmp/streaming/$appName/checkpoint" // Checkpoint Directory
   private val batchInterval: Long = 30 * 1000 // 30 seconds batch interval
 
@@ -19,13 +22,20 @@ object SparkStreamingGracefulShutdownHookApp extends App with Serializable {
     System.exit(1)
   }
 
+  /**
+   * Creates the StreamingContext with the given hostname and port.
+   *
+   * @param hostname The hostname of the socket stream
+   * @param port     The port of the socket stream
+   * @return The created StreamingContext
+   */
   private def createContext(hostname: String, port: Int): StreamingContext = {
 
     // Creating the SparkConf object
     val sparkConf = new SparkConf().setAppName(appName).setIfMissing("spark.master", "local[2]")
 
     // Creating the StreamingContext object
-    logger.info(s"Creating StreamingContext with duration $batchInterval milli seconds ...")
+    logger.info(s"Creating StreamingContext with duration $batchInterval milliseconds ...")
     val ssc = new StreamingContext(sparkConf, Milliseconds(batchInterval))
     ssc.checkpoint(checkpointDirectory) // set checkpoint directory
     logger.info("StreamingContext created successfully ...")
@@ -52,6 +62,5 @@ object SparkStreamingGracefulShutdownHookApp extends App with Serializable {
   private val ssc = StreamingContext.getOrCreate(checkpointDirectory, () => createContext(hostname, port.toInt))
   ssc.start()
   logger.info("StreamingContext Started ...")
-
-  StopByShutdownHook.stopByShutdownHook(ssc)
+  StopByMarkerFileSystem.stopByMarkerFile(ssc, markerFile, batchInterval)
 }

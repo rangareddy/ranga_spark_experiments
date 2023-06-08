@@ -1,32 +1,39 @@
-package com.ranga.spark.streaming.graceful.shutdown.marker
+package com.ranga.spark.streaming.shutdown.socket.http
 
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming._
+import com.ranga.spark.streaming.shutdown.util.http.StopByHttpHandler
 
 // nc -lk 9999
-object SparkStreamingGracefulShutdownMarkerApp extends App with Serializable {
+object SparkStreamingGracefulShutdownHttpApp extends App with Serializable {
 
   private val appName = getClass.getSimpleName.replace("$", "") // App Name
+  // Create a logger instance for logging messages
   @transient private lazy val logger: Logger = Logger.getLogger(appName)
-
-  private val markerFile = "/tmp/streaming/graceful_shutdown/marker_file" // Marker File
   private val checkpointDirectory = s"/tmp/streaming/$appName/checkpoint" // Checkpoint Directory
   private val batchInterval: Long = 30 * 1000 // 30 seconds batch interval
 
-  if (args.length < 2) {
-    logger.error(s"Usage\t: $appName <hostname> <port>")
-    logger.info(s"Example\t: $appName localhost 9999")
+  if (args.length < 3) {
+    logger.error(s"Usage\t: $appName <hostname> <port> <jetty_port>")
+    logger.info(s"Example\t: $appName localhost 9999 3443")
     System.exit(1)
   }
 
+  /**
+   * Creates the StreamingContext with the given hostname and port.
+   *
+   * @param hostname The hostname of the socket stream
+   * @param port     The port of the socket stream
+   * @return The created StreamingContext
+   */
   private def createContext(hostname: String, port: Int): StreamingContext = {
 
     // Creating the SparkConf object
     val sparkConf = new SparkConf().setAppName(appName).setIfMissing("spark.master", "local[2]")
 
     // Creating the StreamingContext object
-    logger.info(s"Creating StreamingContext with duration $batchInterval milli seconds ...")
+    logger.info(s"Creating StreamingContext with duration $batchInterval milliseconds ...")
     val ssc = new StreamingContext(sparkConf, Milliseconds(batchInterval))
     ssc.checkpoint(checkpointDirectory) // set checkpoint directory
     logger.info("StreamingContext created successfully ...")
@@ -47,11 +54,16 @@ object SparkStreamingGracefulShutdownMarkerApp extends App with Serializable {
   }
 
   // Get StreamingContext from checkpoint data or create a new one
-  private val Array(hostname, port) = args
+  private val Array(hostname, port, jettyPort) = args
   logger.info(s"Hostname $hostname and Port $port ...")
 
   private val ssc = StreamingContext.getOrCreate(checkpointDirectory, () => createContext(hostname, port.toInt))
   ssc.start()
   logger.info("StreamingContext Started ...")
-  StopByMarker.stopByMarkerFile(ssc, markerFile, batchInterval)
+
+  // Start the HTTP server that accepts the stop request
+  StopByHttpHandler.httpServer(jettyPort.toInt, ssc, appName)
+
+  // Wait for the task to terminate
+  ssc.awaitTermination()
 }
