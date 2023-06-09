@@ -1,6 +1,5 @@
 package com.ranga.spark.streaming.shutdown.kafka.signal
 
-import com.ranga.spark.streaming.shutdown.kafka.hook.SparkStreamingKafkaGracefulShutdownHookApp.{appName, args, logger}
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.log4j.Logger
@@ -20,7 +19,7 @@ object SparkStreamingKafkaGracefulShutdownSignalApp extends App with Serializabl
     System.exit(1)
   }
 
-  // Get StreamingContext from checkpoint data or create a new one
+  // Consume command line arguments
   private val Array(bootstrapServers, groupId, topic) = args
 
   // Creating the SparkConf object
@@ -29,11 +28,14 @@ object SparkStreamingKafkaGracefulShutdownSignalApp extends App with Serializabl
   sparkConf.set("spark.streaming.stopGracefullyOnShutdown", "true")
   //sparkConf.set("spark.streaming.gracefulStopTimeout", (10 * batchInterval).toString)
 
-  // Create context with 3 second batch interval
-  logger.info(s"Creating StreamingContext with duration 3 seconds batch interval ...")
-  val streamingContext = new StreamingContext(sparkConf, Seconds(3))
+  // Create StreamingContext, with batch duration in seconds
+  private val duration = 30
+  private val batchDuration = Seconds(duration)
+  logger.info(s"Creating StreamingContext with batch duration $duration seconds...")
+  val streamingContext = new StreamingContext(sparkConf, batchDuration)
   logger.info("StreamingContext created successfully ...")
 
+  // Define Kafka Parameters
   private val kafkaParams = Map[String, Object](
     ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG -> bootstrapServers,
     ConsumerConfig.GROUP_ID_CONFIG -> groupId,
@@ -41,21 +43,32 @@ object SparkStreamingKafkaGracefulShutdownSignalApp extends App with Serializabl
     ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG -> classOf[StringDeserializer]
   )
 
+  // Create a set of topics from a string
   private val topics: Set[String] = topic.split(",").map(_.trim).toSet
 
+  // Create a set of topics from a string
   private val stream = KafkaUtils.createDirectStream[String, String](
     streamingContext,
     LocationStrategies.PreferConsistent,
     ConsumerStrategies.Subscribe[String, String](topics, kafkaParams)
   )
 
-  // Get the lines, split them into words, count the words and print
+  // Get the lines of text from Kafka
   val lines = stream.map(record => record.value())
+
+  // Split lines into words
   val words = lines.flatMap(_.split(" "))
-  val wordCounts = words.map(word => (word, 1)).reduceByKey(_ + _)
+
+  // Map every word to a tuple
+  private val wordMap = words.map(word => (word, 1))
+
+  // Count occurrences of each word
+  val wordCounts = wordMap.reduceByKey(_ + _)
+
+  // Print the word count
   wordCounts.print()
 
-  // Start the computation
+  // Start stream processing
   streamingContext.start()
   logger.info("StreamingContext Started ...")
 

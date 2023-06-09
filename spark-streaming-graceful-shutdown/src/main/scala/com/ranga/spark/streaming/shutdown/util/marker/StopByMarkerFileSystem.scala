@@ -22,16 +22,16 @@ object StopByMarkerFileSystem {
    *
    * @param ssc           The StreamingContext to stop
    * @param markerFile    The path of the marker file indicating when to stop
-   * @param batchInterval The batch interval of the streaming job in seconds
+   * @param batchDuration The batch interval of the streaming job in seconds
    */
-  def stopByMarkerFile(ssc: StreamingContext, markerFile: String, batchInterval: Long = 3 * 1000): Unit = {
+  def stopByMarkerFile(ssc: StreamingContext, markerFile: String, batchDuration: Long = 3 * 1000): Unit = {
     var isStop = false
 
     while (!isStop) {
-      logger.info(s"Calling awaitTerminationOrTimeout() with timeout $batchInterval seconds ...")
+      logger.info(s"Calling awaitTerminationOrTimeout() with timeout $batchDuration seconds ...")
 
       // Wait for the computation to terminate within the specified timeout
-      isStop = ssc.awaitTerminationOrTimeout(batchInterval)
+      isStop = ssc.awaitTerminationOrTimeout(batchDuration)
 
       if (isStop) {
         logger.info("Spark Streaming context is terminated. Exiting application ...")

@@ -1,9 +1,9 @@
 package com.ranga.spark.streaming.shutdown.socket.marker
 
+import com.ranga.spark.streaming.shutdown.util.marker.StopByMarkerFileSystem
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming._
-import com.ranga.spark.streaming.shutdown.util.marker.StopByMarkerFileSystem
 
 // nc -lk 9999
 object SparkStreamingGracefulShutdownMarkerApp extends App with Serializable {

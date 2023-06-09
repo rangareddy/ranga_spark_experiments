@@ -6,14 +6,6 @@
 * Scala Version :   2.11.12
 * Java Version  :   1.8
 
-## Login to spark gateway node (for example mynode.host.com) and create the application deployment directory `/apps/spark/spark-streaming-graceful-shutdown`.
-
-```sh
-$ ssh username@mynode.host.com
-$ mkdir -p /apps/spark/spark-streaming-graceful-shutdown
-$ chmod 755 /apps/spark/spark-streaming-graceful-shutdown
-```
-
 ## Download the `spark-streaming-graceful-shutdown` application.
 
 ```sh
@@ -27,6 +19,14 @@ $ cd ranga_spark_experiments/spark-streaming-graceful-shutdown
 
 ```sh
 $ mvn clean package -DskipTests
+```
+
+## Login to spark gateway node (for example mynode.host.com) and create the application deployment directory `/apps/spark/spark-streaming-graceful-shutdown`.
+
+```sh
+$ ssh username@mynode.host.com
+$ mkdir -p /apps/spark/spark-streaming-graceful-shutdown
+$ chmod 755 /apps/spark/spark-streaming-graceful-shutdown
 ```
 
 ## Copy the `spark-streaming-graceful-shutdown-1.0.0-SNAPSHOT.jar` uber jar and run script `run_spark_streaming_graceful_shutdown_app.sh` to spark gateway node `/apps/spark/spark-streaming-graceful-shutdown` directory.
@@ -49,4 +49,30 @@ To stop the job, create an empty file with the name `marker_file` and place it u
 ```shell
 #  > /tmp/marker_file
 # hdfs dfs -put /tmp/marker_file /tmp/streaming/graceful_shutdown_app
+```
+
+## Kafka with Spark Streaming Graceful Shutdown
+
+```sh
+kafka-topics.sh --create \
+--zookeeper localhost:2181 \
+--replication-factor 1 \
+--partitions 1 \
+--topic test
+```
+
+```sh
+kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3 --topic test-topic
+```
+
+```sh
+kafka-topics --list --bootstrap-server localhost:9092
+```
+
+```sh
+kafka-console-producer --bootstrap-server localhost:9092 --topic test-topic
+```
+
+```sh
+kafka-console-consumer --bootstrap-server localhost:9092 --topic test-topic --from-beginning
 ```

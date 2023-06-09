@@ -1,9 +1,9 @@
 package com.ranga.spark.streaming.shutdown.socket.http
 
+import com.ranga.spark.streaming.shutdown.util.http.StopByHttpHandler
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming._
-import com.ranga.spark.streaming.shutdown.util.http.StopByHttpHandler
 
 // nc -lk 9999
 object SparkStreamingGracefulShutdownHttpApp extends App with Serializable {

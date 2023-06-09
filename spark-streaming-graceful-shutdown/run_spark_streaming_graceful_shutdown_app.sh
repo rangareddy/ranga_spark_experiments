@@ -6,13 +6,11 @@ PORT=9999
 
 spark-submit \
   --master yarn \
-  --deploy-mode cluster \
+  --deploy-mode client \
   --driver-memory 2g \
   --executor-memory 2g \
   --num-executors 2 \
   --executor-cores 2 \
-  --conf spark.yarn.maxAppAttempts=1 \
-  --conf spark.streaming.receiver.writeAheadLog.enable=false \
   --conf spark.dynamicAllocation.enabled=false \
   --name SparkStreamingGracefulShutdownApp \
   --class com.ranga.spark.streaming.shutdown.socket.marker.SparkStreamingGracefulShutdownMarkerApp \

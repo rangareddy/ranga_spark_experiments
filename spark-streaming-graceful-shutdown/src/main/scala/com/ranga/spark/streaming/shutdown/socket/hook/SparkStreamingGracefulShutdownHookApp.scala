@@ -1,9 +1,9 @@
 package com.ranga.spark.streaming.shutdown.socket.hook
 
+import com.ranga.spark.streaming.shutdown.util.hook.StopByShutdownHook
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming._
-import com.ranga.spark.streaming.shutdown.util.hook.StopByShutdownHook
 
 // nc -lk 9999
 object SparkStreamingGracefulShutdownHookApp extends App with Serializable {
