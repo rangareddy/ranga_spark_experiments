@@ -47,7 +47,7 @@
         <repository>
             <id>cldr-repo</id>
             <name>Cloudera Public Repo</name>
-            <url>http://repository.cloudera.com/artifactory/cloudera-repos/</url>
+            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
         </repository>
     </repositories>
 
