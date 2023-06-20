@@ -5,7 +5,6 @@ echo "Running <$0> script"
 
 HOST_NAME="localhost"
 PORT=9999
-SOCKET_PARAMS="$HOST_NAME $PORT"
 OTHER_PARAMETERS=""
 CLASS_NAME=""
 BASE_PACKAGE_NAME="com.ranga.spark.streaming.shutdown.socket"
@@ -59,6 +58,6 @@ spark-submit \
   --conf spark.dynamicAllocation.enabled=false \
   --name "$APP_NAME" \
   --class "$CLASS_NAME" \
-  /apps/spark/spark-streaming-graceful-shutdown/spark-streaming-graceful-shutdown-1.0.0-SNAPSHOT.jar "$SOCKET_PARAMS" "$OTHER_PARAMETERS"
+  /apps/spark/spark-streaming-graceful-shutdown/spark-streaming-graceful-shutdown-1.0.0-SNAPSHOT.jar ${HOST_NAME} ${PORT} ${OTHER_PARAMETERS}
 
 echo "Finished <$0> script"
