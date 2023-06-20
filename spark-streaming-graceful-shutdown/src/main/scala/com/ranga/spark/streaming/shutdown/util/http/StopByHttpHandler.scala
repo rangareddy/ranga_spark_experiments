@@ -61,7 +61,8 @@ object StopByHttpHandler {
    * @param ssc - Streaming Context
    */
   private class StopStreamingContextHandler(ssc: StreamingContext) extends AbstractHandler {
-    override def handle(target: String, baseRequest: Request, request: HttpServletRequest, response: HttpServletResponse): Unit = {
+    override def handle(target: String, baseRequest: Request, request: HttpServletRequest,
+                        response: HttpServletResponse): Unit = {
       // Log the target of the request
       logger.info("Serving target: " + target)
 

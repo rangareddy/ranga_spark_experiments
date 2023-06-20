@@ -3,14 +3,12 @@
 #!/bin/bash
 echo "Running <$0> script"
 
-BOOTSTRAP_SERVERS="localhost:9092"
-GROUP_ID="test-group"
-TOPICS="test-topic"
-KAFKA_PARAMS="$BOOTSTRAP_SERVERS $GROUP_ID $TOPICS"
+HOST_NAME="localhost"
+PORT=9999
+SOCKET_PARAMS="$HOST_NAME $PORT"
 OTHER_PARAMETERS=""
 CLASS_NAME=""
-APP_NAME=""
-BASE_PACKAGE_NAME="com.ranga.spark.streaming.shutdown.kafka"
+BASE_PACKAGE_NAME="com.ranga.spark.streaming.shutdown.socket"
 
 echo "Select a shutdown mechanism:"
 echo "1. Shutdown Hook"
@@ -23,24 +21,23 @@ read -p "Enter your choice: " choice
 case $choice in
     1)
         echo "Shutdown Hook invoked"
-        CLASS_NAME="$BASE_PACKAGE_NAME.hook.SparkStreamingKafkaGracefulShutdownHookApp"
+        CLASS_NAME="$BASE_PACKAGE_NAME.hook.SparkStreamingSocketGracefulShutdownHookApp"
         ;;
     2)
         echo "Shutdown Signal invoked"
-        CLASS_NAME="$BASE_PACKAGE_NAME.signal.SparkStreamingKafkaGracefulShutdownSignalApp"
+        CLASS_NAME="$BASE_PACKAGE_NAME.signal.SparkStreamingSocketGracefulShutdownSignalApp"
         ;;
     3)
         echo "Shutdown Marker file system invoked"
-        CLASS_NAME="$BASE_PACKAGE_NAME.marker.SparkStreamingKafkaGracefulShutdownMarkerApp"
-        read -p "Enter marker file path(example /tmp/SparkStreamingKafkaGracefulShutdownMarkerApp/marker_file): " marker_file
+        CLASS_NAME="$BASE_PACKAGE_NAME.marker.SparkStreamingSocketGracefulShutdownMarkerApp"
+        read -p "Enter marker file path(example /tmp/myapp/marker): " marker_file
         OTHER_PARAMETERS="$marker_file"
         ;;
     4)
         echo "Shutdown HTTP service invoked"
-        CLASS_NAME="$BASE_PACKAGE_NAME.http.SparkStreamingKafkaGracefulShutdownHttpApp"
+        CLASS_NAME="$BASE_PACKAGE_NAME.http.SparkStreamingSocketGracefulShutdownHttpApp"
         read -p "Enter jetty port(example 3443): " jetty_port
         OTHER_PARAMETERS="$jetty_port"
-        echo "HTTP Port: $jetty_port"
         ;;
     *)
         echo "Invalid choice. Exiting..."
@@ -62,6 +59,6 @@ spark-submit \
   --conf spark.dynamicAllocation.enabled=false \
   --name "$APP_NAME" \
   --class "$CLASS_NAME" \
-  /apps/spark/spark-streaming-graceful-shutdown/spark-streaming-graceful-shutdown-1.0.0-SNAPSHOT.jar "$KAFKA_PARAMS" "$OTHER_PARAMETERS"
+  /apps/spark/spark-streaming-graceful-shutdown/spark-streaming-graceful-shutdown-1.0.0-SNAPSHOT.jar "$SOCKET_PARAMS" "$OTHER_PARAMETERS"
 
 echo "Finished <$0> script"

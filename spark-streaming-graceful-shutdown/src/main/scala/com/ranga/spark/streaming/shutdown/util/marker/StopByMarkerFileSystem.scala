@@ -20,38 +20,20 @@ object StopByMarkerFileSystem {
   /**
    * Stops the Spark Streaming context gracefully based on the presence of a marker file.
    *
-   * @param ssc           The StreamingContext to stop
-   * @param markerFile    The path of the marker file indicating when to stop
-   * @param batchDuration The batch interval of the streaming job in seconds
+   * @param ssc         The StreamingContext to stop
+   * @param markerFile  The path of the marker file indicating when to stop
    */
-  def stopByMarkerFile(ssc: StreamingContext, markerFile: String, batchDuration: Long = 3 * 1000): Unit = {
+  def stopByMarkerFile(ssc: StreamingContext, markerFile: String): Unit = {
     var isStop = false
-
     while (!isStop) {
-      logger.info(s"Calling awaitTerminationOrTimeout() with timeout $batchDuration seconds ...")
-
-      // Wait for the computation to terminate within the specified timeout
-      isStop = ssc.awaitTerminationOrTimeout(batchDuration)
-
-      if (isStop) {
-        logger.info("Spark Streaming context is terminated. Exiting application ...")
-      } else {
-        logger.info("Spark Streaming Application is still running ...")
-      }
-
       if (!isStop && checkMarkerFileExists(markerFile)) {
-        logger.info("Stopping the Spark Streaming Context Gracefully after 1 second ...")
-
-        // Sleep for 1 second to allow any pending batches to complete
-        Thread.sleep(1000)
-
+        logger.info("Marker file exists, stopping the Spark Streaming Context gracefully ...")
         // Stop the streaming context if it has not already terminated
         ssc.stop(stopSparkContext = true, stopGracefully = true)
-
         // Delete the marker file
         deleteMarkerFile(markerFile)
-
         logger.info("Spark Streaming Context is Stopped ...")
+        isStop = true
       }
     }
   }
@@ -71,7 +53,10 @@ object StopByMarkerFileSystem {
     val fs = path.getFileSystem(new Configuration())
 
     // Check if the marker file exists in the file system
-    fs.exists(path)
+    val markerFileExists = fs.exists(path)
+    if (markerFileExists)
+      logger.info(s"MarkerFile $markerFile exists")
+    markerFileExists
   }
 
   /**
@@ -80,6 +65,8 @@ object StopByMarkerFileSystem {
    * @param markerFile The path of the marker file to delete
    */
   private def deleteMarkerFile(markerFile: String): Unit = {
+    logger.info(s"Deleting marker file: $markerFile")
+
     // Create a new Path object with the provided marker file path
     val path = new Path(markerFile)
 
@@ -90,7 +77,6 @@ object StopByMarkerFileSystem {
     if (fs.exists(path)) {
       // Delete the marker file
       fs.delete(path, true)
-
       // Log a message indicating the successful deletion of the marker file
       logger.info(s"MarkerFile $markerFile successfully deleted")
     }

@@ -8,12 +8,23 @@ import org.apache.spark.SparkConf
 import org.apache.spark.streaming._
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
 
+/**
+ * This class represents a Spark Streaming application that consumes messages from Kafka and gracefully shuts down
+ * when a termination signal is received via an HTTP endpoint.
+ *
+ * The application utilizes the Spark Streaming and Kafka integration to consume messages from Kafka topics. It also
+ * exposes an HTTP endpoint to receive termination signals. Upon receiving a termination signal, the application
+ * performs a graceful shutdown by finishing the processing of the current batch and then stopping the streaming
+ * context.
+ */
+
 object SparkStreamingKafkaGracefulShutdownHttpApp extends App with Serializable {
 
-  private val appName = getClass.getSimpleName.replace("$", "") // App Name
-
   // Create a logger instance for logging messages
-  @transient private lazy val logger: Logger = Logger.getLogger(appName)
+  @transient lazy val logger: Logger = Logger.getLogger(getClass.getName)
+
+  // Define AppName
+  private val appName = getClass.getSimpleName.replace("$", "")
 
   if (args.length < 4) {
     logger.error(s"Usage\t: $appName <bootstrapServers> <groupId> <topics> <jettyPort>")
@@ -24,7 +35,7 @@ object SparkStreamingKafkaGracefulShutdownHttpApp extends App with Serializable 
   // Consume command line arguments
   private val Array(bootstrapServers, groupId, topic, jettyPort) = args
 
-  // Creating the SparkConf object
+  // Create a SparkConf object
   val sparkConf = new SparkConf().setAppName(appName).setIfMissing("spark.master", "local[2]")
 
   // Create StreamingContext, with batch duration in seconds
@@ -45,7 +56,7 @@ object SparkStreamingKafkaGracefulShutdownHttpApp extends App with Serializable 
   // Create a set of topics from a string
   private val topics: Set[String] = topic.split(",").map(_.trim).toSet
 
-  // Create a set of topics from a string
+  // Create a streaming context from Kafka
   private val stream = KafkaUtils.createDirectStream[String, String](
     streamingContext,
     LocationStrategies.PreferConsistent,
@@ -74,6 +85,6 @@ object SparkStreamingKafkaGracefulShutdownHttpApp extends App with Serializable 
   // Start the HTTP server that accepts the stop request
   StopByHttpHandler.httpServer(jettyPort.toInt, streamingContext, appName)
 
-  // Wait for the task to terminate
+  // Wait for the computation to terminate
   streamingContext.awaitTermination()
 }

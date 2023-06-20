@@ -8,12 +8,34 @@ import org.apache.spark.SparkConf
 import org.apache.spark.streaming._
 import org.apache.spark.streaming.kafka010._
 
+/**
+ * This class represents a Spark Streaming application that consumes messages from Kafka and gracefully shuts down
+ * when a termination signal is received via a shutdown hook.
+ *
+ * The application utilizes the Spark Streaming and Kafka integration to consume messages from Kafka topics. It also
+ * registers a shutdown hook to capture termination signals from the environment. Upon receiving a termination signal,
+ * the application performs a graceful shutdown by finishing the processing of the current batch and then stopping the
+ * streaming context.
+ *
+ * Different ways to send Shutdown signal
+ * 1. Ctrl+C:: Pressing Ctrl+C on the command line where your application is running sends the SIGINT signal to
+ * terminate the application. This is the most common method during manual termination.
+ * 2. Using the kill command: The kill command allows you to send signals to processes. You can use it to send signals
+ * like SIGTERM or SIGINT to gracefully terminate your Spark Streaming application.
+ * Syntax: kill -SIGTERM <pid> etc
+ * 3. Using the pkill command: The pkill command allows you to send signals to processes based on their names or patterns.
+ * You can use it to send signals like SIGTERM or SIGINT to your Spark Streaming application by specifying the process
+ * name or part of the name.
+ * Syntax: pkill -<signal_number> -f <process_name>
+ */
+
 object SparkStreamingKafkaGracefulShutdownHookApp extends App with Serializable {
 
-  private val appName = getClass.getSimpleName.replace("$", "") // App Name
-
   // Create a logger instance for logging messages
-  @transient private lazy val logger: Logger = Logger.getLogger(appName)
+  @transient private lazy val logger: Logger = Logger.getLogger(getClass.getName)
+
+  // Define AppName
+  private val appName = getClass.getSimpleName.replace("$", "")
 
   if (args.length < 3) {
     logger.error(s"Usage\t: $appName <bootstrapServers> <groupId> <topics>")
@@ -24,7 +46,7 @@ object SparkStreamingKafkaGracefulShutdownHookApp extends App with Serializable 
   // Consume command line arguments
   private val Array(bootstrapServers, groupId, topic) = args
 
-  // Creating the SparkConf object
+  // Create a SparkConf object
   val sparkConf = new SparkConf().setAppName(appName).setIfMissing("spark.master", "local[2]")
 
   // Create StreamingContext, with batch duration in seconds
@@ -45,7 +67,7 @@ object SparkStreamingKafkaGracefulShutdownHookApp extends App with Serializable 
   // Create a set of topics from a string
   private val topics: Set[String] = topic.split(",").map(_.trim).toSet
 
-  // Create a set of topics from a string
+  // Create a streaming context from Kafka
   private val stream = KafkaUtils.createDirectStream[String, String](
     streamingContext,
     LocationStrategies.PreferConsistent,
@@ -73,4 +95,7 @@ object SparkStreamingKafkaGracefulShutdownHookApp extends App with Serializable 
 
   // Set up a shutdown hook to gracefully stop the StreamingContext
   StopByShutdownHook.stopByShutdownHook(streamingContext)
+
+  // Wait for the computation to terminate
+  streamingContext.awaitTermination()
 }

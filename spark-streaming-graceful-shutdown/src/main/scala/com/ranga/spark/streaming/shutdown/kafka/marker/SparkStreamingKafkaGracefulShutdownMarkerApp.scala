@@ -8,12 +8,23 @@ import org.apache.spark.SparkConf
 import org.apache.spark.streaming._
 import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
 
-// nc -lk 9999
+/**
+ * This class represents a Spark Streaming application that consumes messages from Kafka and gracefully shuts down
+ * when a termination marker is received.
+ *
+ * The application utilizes the Spark Streaming and Kafka integration to consume messages from Kafka topics. It also
+ * listens for a termination marker, which can be a specific message or an event that indicates the need for the
+ * application to gracefully stop. Upon receiving the termination marker, the application finishes processing the
+ * current batch and then stops the streaming context, ensuring a clean and controlled shutdown.
+ */
+
 object SparkStreamingKafkaGracefulShutdownMarkerApp extends App with Serializable {
 
-  private val appName = getClass.getSimpleName.replace("$", "") // App Name
   // Create a logger instance for logging messages
-  @transient private lazy val logger: Logger = Logger.getLogger(appName)
+  @transient lazy val logger: Logger = Logger.getLogger(getClass.getName)
+
+  // Define AppName
+  private val appName = getClass.getSimpleName.replace("$", "")
 
   if (args.length < 4) {
     logger.error(s"Usage\t: $appName <bootstrapServers> <groupId> <topics> <markerFile>")
@@ -24,7 +35,7 @@ object SparkStreamingKafkaGracefulShutdownMarkerApp extends App with Serializabl
   // Consume command line arguments
   private val Array(bootstrapServers, groupId, topic, markerFile) = args
 
-  // Creating the SparkConf object
+  // Create a SparkConf object
   val sparkConf = new SparkConf().setAppName(appName).setIfMissing("spark.master", "local[2]")
 
   // Create StreamingContext, with batch duration in seconds
@@ -45,7 +56,7 @@ object SparkStreamingKafkaGracefulShutdownMarkerApp extends App with Serializabl
   // Create a set of topics from a string
   private val topics: Set[String] = topic.split(",").map(_.trim).toSet
 
-  // Create a set of topics from a string
+  // Create a streaming context from Kafka
   private val stream = KafkaUtils.createDirectStream[String, String](
     streamingContext,
     LocationStrategies.PreferConsistent,
@@ -71,5 +82,9 @@ object SparkStreamingKafkaGracefulShutdownMarkerApp extends App with Serializabl
   streamingContext.start()
   logger.info("StreamingContext Started ...")
 
-  StopByMarkerFileSystem.stopByMarkerFile(streamingContext, markerFile, batchDuration.milliseconds)
+  // Gracefully shutdown the Spark Streaming application when the termination marker is received
+  StopByMarkerFileSystem.stopByMarkerFile(streamingContext, markerFile)
+
+  // Wait for the computation to terminate
+  streamingContext.awaitTermination()
 }
