@@ -185,15 +185,15 @@ b) To collect the HTTP service path for your Spark application, you can follow t
     -   Find the driver executor and note the value under the "Host" column. This is the driver host.
     -   Once you have the driver host, you can construct the HTTP service path using the format http://<driver_host>:<port>/shutdown/<app_name>.
 
-c) Run the above command using browser url or curl command. Here i am running the command from browser.
+c) Run the following url in the browser with the updated driver_host. For example.
 
 `http://localhost:3443/shutdown/SparkStreamingKafkaGracefulShutdownHttpApp`
 
 > You need to replace localhost with driver_host and correct application name.
 > Ensure that the Spark application is running and the HTTP service is set up correctly for the shutdown to be executed successfully.
 
-You will see the following output after successful shutdown.
+You will see the following output in the browser after graceful shutdown.
 
-```shell
+```sh
 The Spark Streaming application has been successfully stopped.
 ```
